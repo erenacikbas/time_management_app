@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:time_management_app/application_layer/home/home.dart';
 import 'package:time_management_app/application_layer/loading_screen.dart/loading_screen.dart';
 
-import 'application_layer/auth/auth_management/authenticate.dart';
+import 'auth/auth_management/authenticate.dart';
 
 class Wrapper extends StatelessWidget {
   @override

@@ -27,12 +27,11 @@ class _LoginScreenState extends State<LoginScreen> {
   String password = "";
 
   //FirebaseAuth
-  FirebaseAuth _authInstance = FirebaseAuth.instance;
 
   void getUserID() async {
     final SharedPreferences prefs = await _prefs;
     final FirebaseAuth _auth = FirebaseAuth.instance;
-    final User user = await _auth.currentUser;
+    final User user =  _auth.currentUser;
     Future<String> uid =
         prefs.setString("userID", user.uid).then((bool success) {
       return user.uid;
@@ -44,92 +43,92 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return loading
         ? LoadingScreen()
-        : SafeArea(
-            child: Scaffold(
-              backgroundColor: Colors.brown[100],
-              appBar: AppBar(
-                backgroundColor: Colors.brown[400],
-                elevation: 0.0,
-                title: Text("Sign in to Brew Crew"),
-                actions: <Widget>[
-                  FlatButton.icon(
-                    icon: Icon(Icons.person),
-                    label: Text("Register"),
-                    onPressed: () => widget.toogleView(),
-                  )
+        : Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.indigoAccent,
+            elevation: 0.0,
+            title: Text("Sign in to Great Tracker"),
+            // actions: <Widget>[
+            //   FlatButton.icon(
+            //     icon: Icon(Icons.person),
+            //     label: Text("Register"),
+            //     onPressed: () => widget.toogleView(),
+            //   )
+            // ],
+          ),
+          body: Container(
+            padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  TextFormField(
+                    decoration:
+                        textInputDecoration.copyWith(hintText: "Email"),
+                    validator: (val) =>
+                        val.isEmpty ? "Enter an email" : null,
+                    onChanged: (val) {
+                      setState(() => email = val);
+                    },
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  TextFormField(
+                    decoration:
+                        textInputDecoration.copyWith(hintText: "Password"),
+                    validator: (val) => val.length < 6
+                        ? "Enter a password 6+ chars long"
+                        : null,
+                    onChanged: (val) {
+                      setState(() => password = val);
+                    },
+                    obscureText: true,
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  RaisedButton(
+                    color: Colors.indigoAccent,
+                    child: Text(
+                      "Sign in",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onPressed: () async {
+                      if (_formKey.currentState.validate()) {
+                        setState(() => loading = true);
+                        dynamic result = await _auth
+                            .signInWithEmailAndPassword(email, password);
+
+                        if (result == null) {
+                          print("$email and $password");
+                          setState(() {
+                            error =
+                                "could not sign in with those credentials.";
+                            loading = false;
+                          });
+                        }
+                        getUserID();
+                      }
+                    },
+                  ),
+                  SizedBox(
+                    height: 12.0,
+                  ),
+                  Text(
+                    error,
+                    style: TextStyle(color: Colors.red),
+                  ),
+                  GestureDetector(
+                        onTap: () => widget.toogleView(),
+                        child: Text("Don't you have an account ? Register"))
                 ],
               ),
-              body: Container(
-                padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 20.0,
-                      ),
-                      TextFormField(
-                        decoration:
-                            textInputDecoration.copyWith(hintText: "Email"),
-                        validator: (val) =>
-                            val.isEmpty ? "Enter an email" : null,
-                        onChanged: (val) {
-                          setState(() => email = val);
-                        },
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      TextFormField(
-                        decoration:
-                            textInputDecoration.copyWith(hintText: "Password"),
-                        validator: (val) => val.length < 6
-                            ? "Enter a password 6+ chars long"
-                            : null,
-                        onChanged: (val) {
-                          setState(() => password = val);
-                        },
-                        obscureText: true,
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      RaisedButton(
-                        color: Colors.pink[400],
-                        child: Text(
-                          "Sign in",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        onPressed: () async {
-                          if (_formKey.currentState.validate()) {
-                            setState(() => loading = true);
-                            dynamic result = await _auth
-                                .signInWithEmailAndPassword(email, password);
-
-                            if (result == null) {
-                              print("$email and $password");
-                              setState(() {
-                                error =
-                                    "could not sign in with those credentials.";
-                                loading = false;
-                              });
-                            }
-                            getUserID();
-                          }
-                        },
-                      ),
-                      SizedBox(
-                        height: 12.0,
-                      ),
-                      Text(
-                        error,
-                        style: TextStyle(color: Colors.red),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
             ),
-          );
+          ),
+        );
   }
 }

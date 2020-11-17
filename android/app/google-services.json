@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "135688604825",
+    "firebase_url": "https://time-management-app-b5861.firebaseio.com",
+    "project_id": "time-management-app-b5861",
+    "storage_bucket": "time-management-app-b5861.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:135688604825:android:ac01739e4ff8d2ddb5bc08",
+        "android_client_info": {
+          "package_name": "com.erentuna.time_management_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "135688604825-n2nkjt0vktrbetunc35fqdlebo7tend7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPqZ7IOGzYWWT1KEQ2GcWRLv8PbEiag7o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "135688604825-n2nkjt0vktrbetunc35fqdlebo7tend7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "135688604825-bksl7pi7d9g4l3o93f2fdtcvau5pnj9t.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.erentuna.timeManagementApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

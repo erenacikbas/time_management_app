@@ -29,7 +29,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             appBar: AppBar(
               backgroundColor: Colors.indigoAccent,
               elevation: 0.0,
-              title: Text("Sign up to Brew Crew"),
+              title: Text("Great Tracker"),
               // actions: <Widget>[
               //   FlatButton.icon(
               //     icon: Icon(Icons.person),

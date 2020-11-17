@@ -47,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
           appBar: AppBar(
             backgroundColor: Colors.indigoAccent,
             elevation: 0.0,
-            title: Text("Sign in to Great Tracker"),
+            title: Text("Great Tracker"),
             // actions: <Widget>[
             //   FlatButton.icon(
             //     icon: Icon(Icons.person),

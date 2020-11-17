@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 // Import the firebase_core plugin
 import 'package:firebase_core/firebase_core.dart';
-import 'package:time_management_app/application_layer/auth/login/login_screen.dart';
 import 'package:time_management_app/application_layer/loading_screen.dart/loading_screen.dart';
+
+import 'application_layer/wrapper.dart';
 
 void main() {
   runApp(MyApp());
@@ -42,9 +43,7 @@ class FirebaseCheck extends StatelessWidget {
 
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
-          return MaterialApp(
-            home: LoginScreen(),
-          );
+          return Wrapper();
         }
 
         // Otherwise, show something whilst waiting for initialization to complete

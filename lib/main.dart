@@ -5,10 +5,20 @@ import 'package:time_management_app/application_layer/auth/login/login_screen.da
 import 'package:time_management_app/application_layer/loading_screen.dart/loading_screen.dart';
 
 void main() {
-  runApp(App());
+  runApp(MyApp());
 }
 
-class App extends StatelessWidget {
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: FirebaseCheck(),
+    );
+  }
+}
+
+class FirebaseCheck extends StatelessWidget {
   // Create the initialization Future outside of `build`:
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
 
@@ -20,21 +30,26 @@ class App extends StatelessWidget {
       builder: (context, snapshot) {
         // Check for errors
         if (snapshot.hasError) {
-          //TODO: Design Widget for error
-          return Container();
+          return Container(
+              color: Colors.redAccent,
+              child: Center(
+                child: Text(
+                  "Error",
+                  style: TextStyle(color: Colors.white, fontSize: 50),
+                ),
+              ));
         }
 
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
-          // TODO: Add Wrapper Widget when finished
-          return LoginScreen();
+          return MaterialApp(
+            home: LoginScreen(),
+          );
         }
 
         // Otherwise, show something whilst waiting for initialization to complete
-        // TODO: Design Loading Screen
         return LoadingScreen();
       },
     );
   }
 }
-

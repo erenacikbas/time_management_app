@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:time_management_app/application_layer/loading_screen.dart/loading_screen.dart';
 import 'package:time_management_app/service_layer/auth.dart';
 import 'package:time_management_app/shared/constants.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginScreen extends StatefulWidget {
   final Function toogleView;
@@ -26,12 +27,36 @@ class _LoginScreenState extends State<LoginScreen> {
   String email = "";
   String password = "";
 
+  //Google Sign-in
+  final GoogleSignIn googleSignIn = GoogleSignIn();
+  Future<String> signInWithGoogle() async {
+    final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+    final GoogleSignInAuthentication googleSignInAuthentication =
+        await googleSignInAccount.authentication;
+
+    final AuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleSignInAuthentication.accessToken,
+      idToken: googleSignInAuthentication.idToken,
+    );
+
+    final UserCredential authResult =
+        await FirebaseAuth.instance.signInWithCredential(credential);
+    final User user = authResult.user;
+
+    assert(!user.isAnonymous);
+    assert(await user.getIdToken() != null);
+
+    final User currentUser = FirebaseAuth.instance.currentUser;
+    assert(user.uid == currentUser.uid);
+
+    return 'signInWithGoogle succeeded: $user';
+  }
   //FirebaseAuth
 
   void getUserID() async {
     final SharedPreferences prefs = await _prefs;
     final FirebaseAuth _auth = FirebaseAuth.instance;
-    final User user =  _auth.currentUser;
+    final User user = _auth.currentUser;
     Future<String> uid =
         prefs.setString("userID", user.uid).then((bool success) {
       return user.uid;
@@ -41,94 +66,186 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     return loading
         ? LoadingScreen()
         : Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.indigoAccent,
-            elevation: 0.0,
-            title: Text("Great Tracker"),
-            // actions: <Widget>[
-            //   FlatButton.icon(
-            //     icon: Icon(Icons.person),
-            //     label: Text("Register"),
-            //     onPressed: () => widget.toogleView(),
-            //   )
-            // ],
-          ),
-          body: Container(
-            padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  TextFormField(
-                    decoration:
-                        textInputDecoration.copyWith(hintText: "Email"),
-                    validator: (val) =>
-                        val.isEmpty ? "Enter an email" : null,
-                    onChanged: (val) {
-                      setState(() => email = val);
-                    },
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    decoration:
-                        textInputDecoration.copyWith(hintText: "Password"),
-                    validator: (val) => val.length < 6
-                        ? "Enter a password 6+ chars long"
-                        : null,
-                    onChanged: (val) {
-                      setState(() => password = val);
-                    },
-                    obscureText: true,
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  RaisedButton(
-                    color: Colors.indigoAccent,
-                    child: Text(
-                      "Sign in",
-                      style: TextStyle(color: Colors.white),
+            appBar: AppBar(
+              backgroundColor: Colors.indigoAccent,
+              elevation: 0.0,
+              title: Text("Great Tracker"),
+              // actions: <Widget>[
+              //   FlatButton.icon(
+              //     icon: Icon(Icons.person),
+              //     label: Text("Register"),
+              //     onPressed: () => widget.toogleView(),
+              //   )
+              // ],
+            ),
+            body: Container(
+              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 20.0,
                     ),
-                    onPressed: () async {
-                      if (_formKey.currentState.validate()) {
-                        setState(() => loading = true);
-                        dynamic result = await _auth
-                            .signInWithEmailAndPassword(email, password);
+                    TextFormField(
+                      decoration:
+                          textInputDecoration.copyWith(hintText: "Email"),
+                      validator: (val) => val.isEmpty ? "Enter an email" : null,
+                      onChanged: (val) {
+                        setState(() => email = val);
+                      },
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    TextFormField(
+                      decoration:
+                          textInputDecoration.copyWith(hintText: "Password"),
+                      validator: (val) => val.length < 6
+                          ? "Enter a password 6+ chars long"
+                          : null,
+                      onChanged: (val) {
+                        setState(() => password = val);
+                      },
+                      obscureText: true,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    SizedBox(
+                      height: 12.0,
+                    ),
+                    Text(
+                      error,
+                      style: TextStyle(color: Colors.red),
+                    ),
+                    InkWell(
+                      child: Container(
+                          width: width / 3,
+                          height: height / 18,
+                          margin: EdgeInsets.only(top: 25),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: Colors.indigoAccent),
+                          child: Center(
+                              child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              Text(
+                                'Sign in',
+                                style: TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              ),
+                            ],
+                          ))),
+                      onTap: () async {
+                        if (_formKey.currentState.validate()) {
+                          setState(() => loading = true);
+                          dynamic result = await _auth
+                              .signInWithEmailAndPassword(email, password);
 
-                        if (result == null) {
-                          print("$email and $password");
-                          setState(() {
-                            error =
-                                "could not sign in with those credentials.";
-                            loading = false;
-                          });
+                          if (result == null) {
+                            print("$email and $password");
+                            setState(() {
+                              error =
+                                  "could not sign in with those credentials.";
+                              loading = false;
+                            });
+                          }
+                          getUserID();
                         }
-                        getUserID();
-                      }
-                    },
-                  ),
-                  SizedBox(
-                    height: 12.0,
-                  ),
-                  Text(
-                    error,
-                    style: TextStyle(color: Colors.red),
-                  ),
-                  GestureDetector(
+                      },
+                    ),
+                    SizedBox(height: 10),
+                    GestureDetector(
                         onTap: () => widget.toogleView(),
-                        child: Text("Don't you have an account ? Register"))
-                ],
+                        child: Text("Don't you have an account ? Register")),
+                    SizedBox(height: 10),
+                    //Sign in with Google
+                    InkWell(
+                      child: Container(
+                          width: width / 1.7,
+                          height: height / 18,
+                          margin: EdgeInsets.only(top: 10),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: Colors.black),
+                          child: Center(
+                              child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              SizedBox(width: 10,),
+                              Container(
+                                height: 20.0,
+                                width: 20.0,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image:
+                                          AssetImage('assets/google_logo.png'),
+                                      fit: BoxFit.contain),
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                              SizedBox(width: 15,),
+                              Text(
+                                'Sign in with Google',
+                                style: TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              ),
+                            ],
+                          ))),
+                      onTap: () => signInWithGoogle(),
+                    ),
+                    //Sign in with Apple
+                    InkWell(
+                      child: Container(
+                          width: width / 1.7,
+                          height: height / 18,
+                          margin: EdgeInsets.only(top: 10),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: Colors.black),
+                          child: Center(
+                              child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Container(
+                                height: 25.0,
+                                width: 25.0,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image:
+                                          AssetImage('assets/apple_logo.png'),
+                                      fit: BoxFit.contain),
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                              SizedBox(width: 15,),
+                              Text(
+                                'Sign in with Apple',
+                                style: TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              ),
+                            ],
+                          ))),
+                      onTap: () {},
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        );
+          );
   }
 }

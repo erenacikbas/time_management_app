@@ -23,6 +23,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     return loading
         ? LoadingScreen()
         : Scaffold(
@@ -43,6 +45,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               child: Form(
                 key: _formKey,
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(
                       height: 20,
@@ -72,13 +75,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     SizedBox(
                       height: 20,
                     ),
-                    RaisedButton(
-                      color: Colors.indigoAccent,
-                      child: Text(
-                        "Register",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      onPressed: () async {
+                    InkWell(
+                      child: Container(
+                          width: width / 3,
+                          height: height / 18,
+                          margin: EdgeInsets.only(top: 25),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: Colors.indigoAccent),
+                          child: Center(
+                              child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              Text(
+                                'Register',
+                                style: TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              ),
+                            ],
+                          ))),
+                      onTap: () async {
                         if (_formKey.currentState.validate()) {
                           setState(() => loading = true);
                           dynamic result = await _auth
@@ -92,6 +110,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         }
                       },
                     ),
+                    // RaisedButton(
+                    //   color: Colors.indigoAccent,
+                    //   child: Text(
+                    //     "Register",
+                    //     style: TextStyle(color: Colors.white),
+                    //   ),
+                    //   onPressed: () async {
+                    //     if (_formKey.currentState.validate()) {
+                    //       setState(() => loading = true);
+                    //       dynamic result = await _auth
+                    //           .registerWithEmailAndPassword(email, password);
+                    //       if (result == null) {
+                    //         setState(() {
+                    //           error = "please supply a valid email";
+                    //           loading = false;
+                    //         });
+                    //       }
+                    //     }
+                    //   },
+                    // ),
                     SizedBox(
                       height: 12.0,
                     ),

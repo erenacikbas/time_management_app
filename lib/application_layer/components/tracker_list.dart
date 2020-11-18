@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:grouped_list/grouped_list.dart';
 import 'package:provider/provider.dart';
 import 'package:time_management_app/application_layer/components/tracker_tile.dart';
 import 'package:time_management_app/application_layer/loading_screen.dart/loading_screen.dart';
 import 'package:time_management_app/application_layer/models/trackers.dart';
+
+import 'grouped.list.dart';
 
 class TrackerList extends StatefulWidget {
   @override
@@ -29,6 +30,7 @@ class _TrackerListState extends State<TrackerList> {
     if (_trackers != null) {
       return Container(
         child: GroupedListView<dynamic, String>(
+          
           elements: _trackers,
           groupBy: (element) => element.date,
           //indexedItemBuilder: (context,dynamic element, index ) => Text(_trackers[index].name),

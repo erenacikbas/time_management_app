@@ -14,7 +14,7 @@ dependencies:
 
   cupertino_icons: ^1.0.1
   #Front-end dependencies
-  grouped_list: ^3.5.0
+  grouped_list: ^3.7.0
 
   #Back-end dependencies
   firebase_core: ^0.5.2

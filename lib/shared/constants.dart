@@ -22,6 +22,9 @@ const trackerAdderTextInputDecoration = InputDecoration(
   enabledBorder: OutlineInputBorder(
     borderSide: BorderSide(color: Colors.transparent),
     borderRadius: BorderRadius.all(Radius.circular(12)),
-    
   ),
+  focusedBorder: OutlineInputBorder(
+    borderSide: BorderSide.none
+  ),
+  
 );

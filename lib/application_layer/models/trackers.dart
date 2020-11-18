@@ -9,7 +9,8 @@ class Trackers {
   final String duration;
   final String userID;
   final String eventID;
+  final Timestamp createdAt;
 
-  Trackers({this.startingTime,this.finishingTime,this.name,this.date,this.duration,this.userID,this.eventID});
+  Trackers({this.startingTime,this.finishingTime,this.name,this.date,this.duration,this.userID,this.eventID,this.createdAt});
 
 }

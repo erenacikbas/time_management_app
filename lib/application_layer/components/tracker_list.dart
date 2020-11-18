@@ -49,7 +49,8 @@ class _TrackerListState extends State<TrackerList> {
           useStickyGroupSeparators: false,
           //itemComparator: ,
           floatingHeader: false, // options
-          order: GroupedListOrder.ASC,
+          //order: GroupedListOrder.DESC,
+          groupComparator: (value1, value2) => value2.compareTo(value1),
         ),
       );
     } else {

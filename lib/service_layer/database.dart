@@ -17,14 +17,18 @@ class DatabaseService {
 
   // collection reference
   final CollectionReference trackersCollection =
-      Firestore.instance.collection("trackers");
+      FirebaseFirestore.instance.collection("trackers");
+
+  final Query orderedCollection =
+      FirebaseFirestore.instance.collection("trackers").orderBy("createdAt",descending: true);
+
 
   // Future createNewUser() async {
   //   return await trackersCollection.add({"uid": uid});
   // }
 
   Future updateUserData(String startingTime, String finishingTime, String name,
-      String date, String duration, String userID, String eventID) async {
+      String date, String duration, String userID, String eventID,Timestamp timeStamp) async {
     return await trackersCollection.doc(eventID).set(
       {
       "starting_time": startingTime,
@@ -34,6 +38,7 @@ class DatabaseService {
       "duration": duration,
       "userID": userID,
       "eventID": eventID,
+      "createdAt": timeStamp,
     });
   }
 
@@ -48,6 +53,7 @@ class DatabaseService {
         duration: doc.data()["duration"],
         userID: doc.data()["userID"],
         eventID: doc.data()["eventID"],
+        createdAt: doc.data()["timeStamp"],
       );
     }).toList();
   }
@@ -75,7 +81,7 @@ class DatabaseService {
 
   // get trackers stream
   Stream<List<Trackers>> get trackers {
-    return trackersCollection.snapshots().map(_trackersListFromSnapShot);
+    return orderedCollection.snapshots().map(_trackersListFromSnapShot);
   }
 
   Future<String> get sharedPreferences async {
@@ -85,7 +91,7 @@ class DatabaseService {
   }
 
   Stream<List<Trackers>> trackersFromFilteredData(String userID) {
-    return trackersCollection
+    return orderedCollection
         .where("userID", isEqualTo: userID)
         .snapshots()
         .map(_trackersListFromSnapShot);

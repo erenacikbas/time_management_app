@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
@@ -79,6 +79,7 @@ class _TrackerAdderState extends State<TrackerAdder> {
 
   final TextEditingController _textEditingController = TextEditingController();
 
+
   @override
   Widget build(BuildContext context) {
     //final user = Provider.of<User>(context);
@@ -110,6 +111,7 @@ class _TrackerAdderState extends State<TrackerAdder> {
                     Flexible(
                       flex: 5,
                       child: TextFormField(
+                        cursorColor: Colors.indigoAccent,
                         key: _formKey,
                         controller: _textEditingController,
                         onChanged: (value) {
@@ -234,8 +236,10 @@ class _TrackerAdderState extends State<TrackerAdder> {
                                               duration =
                                                   "${hoursStr}:${minutesStr}:${secondsStr}";
 
-                                              date = DateFormat.yMd()
-                                                  .format(DateTime.now());
+                                              date = "${DateFormat("d")
+                                                  .format(DateTime.now())}/${DateFormat("M")
+                                                  .format(DateTime.now())}/${DateFormat("y")
+                                                  .format(DateTime.now())}";
                                               //print(eventName);
 
                                               hoursStr = '00';
@@ -253,6 +257,7 @@ class _TrackerAdderState extends State<TrackerAdder> {
                                               duration,
                                               widget.userID,
                                               uuid.v1(),
+                                              Timestamp.now(),
                                             );
                                           },
                                         ),

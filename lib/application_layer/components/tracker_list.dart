@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:provider/provider.dart';
-import 'package:time_management_app/application_layer/home/tracker_tile.dart';
+import 'package:time_management_app/application_layer/components/tracker_tile.dart';
 import 'package:time_management_app/application_layer/loading_screen.dart/loading_screen.dart';
 import 'package:time_management_app/application_layer/models/trackers.dart';
 
@@ -36,7 +36,7 @@ class _TrackerListState extends State<TrackerList> {
           // itemComparator: (item1, item2) =>
           //         item2.finishingTime.compareTo(item1.finishingTime),
           groupSeparatorBuilder: (String value) => Padding(
-            padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
+            padding: const EdgeInsets.only(top: 20.0, bottom: 0.0),
             child: Text(
               value,
               textAlign: TextAlign.center,

@@ -14,14 +14,10 @@ import 'package:uuid/uuid.dart';
 var uuid = Uuid();
 
 class TrackerAdder extends StatefulWidget {
-  TrackerAdder({
-    Key key,
-    this.userID,
-    this.eventID
-  }) : super(key: key);
+  TrackerAdder({Key key, this.userID, this.eventID}) : super(key: key);
 
-  String userID;
-  String eventID;
+  final String userID;
+  final String eventID;
 
   @override
   _TrackerAdderState createState() => _TrackerAdderState();
@@ -100,184 +96,184 @@ class _TrackerAdderState extends State<TrackerAdder> {
       padding: const EdgeInsets.only(top: 8.0),
       child: Container(
         width: double.infinity,
-        child: Card(
+        child: Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12), gradient: greyGradient),
           margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
-          child: Column(
-            children: [
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Flexible(
-                    flex: 5,
-                    child: TextFormField(
-                      key: _formKey,
-                      controller: _textEditingController,
-                      onChanged: (value) {
-                        setState(() {
-                          eventName = value;
-                        });
-                      },
-                      decoration: textInputDecoration.copyWith(
-                        hintText: "What are you working on ?",
-                        focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.blueGrey, width: 2.0)),
-                      ),
-                    ),
-                  ),
-                  Flexible(
-                    flex: 3,
-                    child: FlatButton.icon(
-                        icon: Icon(Icons.add_circle_outline),
-                        label: Text("Project"),
-                        onPressed: () {}),
-                  ),
-                ],
-              ),
-              Container(
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey, width: 0.5)),
-                child: Row(
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Flexible(
-                      flex: 2,
-                      child: Container(
-                        decoration: _verticalDivider(),
-                        child: RawMaterialButton(
-                          child: Text("\$"),
-                          textStyle: TextStyle(
-                              color: Colors.grey,
-                              fontWeight: FontWeight.w200,
-                              fontSize: 25),
-                          onPressed: () {},
+                      flex: 5,
+                      child: TextFormField(
+                        key: _formKey,
+                        controller: _textEditingController,
+                        onChanged: (value) {
+                          setState(() {
+                            eventName = value;
+                          });
+                        },
+                        decoration: trackerAdderTextInputDecoration.copyWith(
+                          hintText: "What are you working on ?",
+                          // focusedBorder: OutlineInputBorder(
+                          //     borderSide:
+                          //         BorderSide(color: Colors.blueGrey, width: 2.0)),
                         ),
-                      ),
-                    ),
-                    Flexible(
-                      flex: 8,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Container(
-                            padding: EdgeInsets.only(right: 5),
-                            child: Text(
-                              "${hoursStr}:${minutesStr}:${secondsStr}",
-                              style: TextStyle(
-                                fontSize: 15.0,
-                              ),
-                            ),
-                          ),
-                          timerStream == null
-                              ? Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 5.0),
-                                      // Start Button
-                                      child: RaisedButton(
-                                        child: Text(
-                                          'START',
-                                          style: TextStyle(
-                                            fontSize: 15.0,
-                                          ),
-                                        ),
-                                        onPressed: () {
-                                          startingTime = DateFormat.Hm()
-                                              .format(DateTime.now());
-                                          FocusScope.of(context).unfocus();
-                                          timerStream = stopWatchStream();
-                                          timerSubscription =
-                                              timerStream.listen((int newTick) {
-                                            setState(() {
-                                              hoursStr =
-                                                  ((newTick / (60 * 60)) % 60)
-                                                      .floor()
-                                                      .toString()
-                                                      .padLeft(2, '0');
-                                              minutesStr = ((newTick / 60) % 60)
-                                                  .floor()
-                                                  .toString()
-                                                  .padLeft(2, '0');
-                                              secondsStr = (newTick % 60)
-                                                  .floor()
-                                                  .toString()
-                                                  .padLeft(2, '0');
-                                              print(startingTime);
-                                              print(finishingTime);
-                                            });
-                                          });
-                                        },
-                                        color: Colors.green,
-                                      ),
-                                    ),
-                                    MaterialButton(
-                                        minWidth: 0,
-                                        shape: CircleBorder(),
-                                        padding: EdgeInsets.all(0),
-                                        onPressed: () {},
-                                        child: Icon(Icons.more_vert)),
-                                  ],
-                                )
-                              : Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 5.0),
-                                      // Stop Button
-                                      child: RaisedButton(
-                                        child: Text(
-                                          'STOP',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 15.0,
-                                          ),
-                                        ),
-                                        onPressed: () async {
-                                          await timerSubscription.cancel();
-                                          timerStream = null;
-                                          setState(() {
-                                            _textEditingController.clear();
-                                            duration =
-                                                "${hoursStr}:${minutesStr}:${secondsStr}";
-
-                                            date = DateFormat.yMd()
-                                                .format(DateTime.now());
-                                            //print(eventName);
-
-                                            hoursStr = '00';
-                                            minutesStr = '00';
-                                            secondsStr = '00';
-                                          });
-                                          finishingTime = DateFormat.Hm()
-                                              .format(DateTime.now());
-
-                                          DatabaseService().updateUserData(
-                                            startingTime,
-                                            finishingTime,
-                                            eventName,
-                                            date,
-                                            duration,
-                                            widget.userID,
-                                            uuid.v1(),
-                                          );
-                                        },
-                                        color: Colors.red,
-                                      ),
-                                    ),
-                                    MaterialButton(
-                                      minWidth: 0,
-                                      shape: CircleBorder(),
-                                      padding: EdgeInsets.all(0),
-                                      onPressed: () {},
-                                      child: Icon(Icons.close),
-                                    ),
-                                  ],
-                                ),
-                        ],
                       ),
                     ),
                   ],
                 ),
-              ),
-            ],
+                Container(
+                  // decoration: BoxDecoration(
+                  //     border: Border.all(color: Colors.grey, width: 0.5)),
+                  child: Row(
+                    children: [
+                      Flexible(
+                        flex: 2,
+                        child: Container(
+                          //decoration: _verticalDivider(),
+                          child: RawMaterialButton(
+                            child: Text("\$"),
+                            textStyle: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w200,
+                                fontSize: 25),
+                            onPressed: () {},
+                          ),
+                        ),
+                      ),
+                      Flexible(
+                        flex: 8,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Container(
+                              padding: EdgeInsets.only(right: 5),
+                              child: Text(
+                                "${hoursStr}:${minutesStr}:${secondsStr}",
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                ),
+                              ),
+                            ),
+                            timerStream == null
+                                ? Row(
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 5.0),
+                                        // Start Button
+                                        child: InkWell(
+                                          child: Text(
+                                            'START',
+                                            style: TextStyle(
+                                                fontSize: 15.0,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          onTap: () {
+                                            startingTime = DateFormat.Hm()
+                                                .format(DateTime.now());
+                                            FocusScope.of(context).unfocus();
+                                            timerStream = stopWatchStream();
+                                            timerSubscription = timerStream
+                                                .listen((int newTick) {
+                                              setState(() {
+                                                hoursStr =
+                                                    ((newTick / (60 * 60)) % 60)
+                                                        .floor()
+                                                        .toString()
+                                                        .padLeft(2, '0');
+                                                minutesStr =
+                                                    ((newTick / 60) % 60)
+                                                        .floor()
+                                                        .toString()
+                                                        .padLeft(2, '0');
+                                                secondsStr = (newTick % 60)
+                                                    .floor()
+                                                    .toString()
+                                                    .padLeft(2, '0');
+                                                print(startingTime);
+                                                print(finishingTime);
+                                              });
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                      MaterialButton(
+                                          minWidth: 0,
+                                          shape: CircleBorder(),
+                                          padding: EdgeInsets.all(0),
+                                          onPressed: () {},
+                                          child: Icon(Icons.more_vert)),
+                                    ],
+                                  )
+                                : Row(
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 5.0),
+                                        // Stop Button
+                                        child: InkWell(
+                                          child: Text(
+                                            'STOP',
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 15.0,
+                                              fontWeight: FontWeight.bold
+                                            ),
+                                          ),
+                                          onTap: () async {
+                                            await timerSubscription.cancel();
+                                            timerStream = null;
+                                            setState(() {
+                                              _textEditingController.clear();
+                                              duration =
+                                                  "${hoursStr}:${minutesStr}:${secondsStr}";
+
+                                              date = DateFormat.yMd()
+                                                  .format(DateTime.now());
+                                              //print(eventName);
+
+                                              hoursStr = '00';
+                                              minutesStr = '00';
+                                              secondsStr = '00';
+                                            });
+                                            finishingTime = DateFormat.Hm()
+                                                .format(DateTime.now());
+
+                                            DatabaseService().updateUserData(
+                                              startingTime,
+                                              finishingTime,
+                                              eventName,
+                                              date,
+                                              duration,
+                                              widget.userID,
+                                              uuid.v1(),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                      MaterialButton(
+                                        minWidth: 0,
+                                        shape: CircleBorder(),
+                                        padding: EdgeInsets.all(0),
+                                        onPressed: () {},
+                                        child: Icon(Icons.close),
+                                      ),
+                                    ],
+                                  ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

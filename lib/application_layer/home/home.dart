@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:time_management_app/application_layer/components/tracker_adder.dart';
-import 'package:time_management_app/application_layer/home/tracker_list.dart';
+import 'package:time_management_app/application_layer/components/tracker_list.dart';
 import 'package:time_management_app/application_layer/loading_screen.dart/loading_screen.dart';
 import 'package:time_management_app/application_layer/models/trackers.dart';
 import 'package:time_management_app/service_layer/auth.dart';

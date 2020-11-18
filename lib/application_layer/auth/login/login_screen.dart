@@ -207,41 +207,41 @@ class _LoginScreenState extends State<LoginScreen> {
                       onTap: () => signInWithGoogle(),
                     ),
                     //Sign in with Apple
-                    InkWell(
-                      child: Container(
-                          width: width / 1.7,
-                          height: height / 18,
-                          margin: EdgeInsets.only(top: 10),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Colors.black),
-                          child: Center(
-                              child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Container(
-                                height: 25.0,
-                                width: 25.0,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image:
-                                          AssetImage('assets/apple_logo.png'),
-                                      fit: BoxFit.contain),
-                                  shape: BoxShape.circle,
-                                ),
-                              ),
-                              SizedBox(width: 15,),
-                              Text(
-                                'Sign in with Apple',
-                                style: TextStyle(
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
-                              ),
-                            ],
-                          ))),
-                      onTap: () {},
-                    ),
+                    // InkWell(
+                    //   child: Container(
+                    //       width: width / 1.7,
+                    //       height: height / 18,
+                    //       margin: EdgeInsets.only(top: 10),
+                    //       decoration: BoxDecoration(
+                    //           borderRadius: BorderRadius.circular(20),
+                    //           color: Colors.black),
+                    //       child: Center(
+                    //           child: Row(
+                    //         mainAxisAlignment: MainAxisAlignment.center,
+                    //         children: <Widget>[
+                    //           Container(
+                    //             height: 25.0,
+                    //             width: 25.0,
+                    //             decoration: BoxDecoration(
+                    //               image: DecorationImage(
+                    //                   image:
+                    //                       AssetImage('assets/apple_logo.png'),
+                    //                   fit: BoxFit.contain),
+                    //               shape: BoxShape.circle,
+                    //             ),
+                    //           ),
+                    //           SizedBox(width: 15,),
+                    //           Text(
+                    //             'Sign in with Apple',
+                    //             style: TextStyle(
+                    //                 fontSize: 16.0,
+                    //                 fontWeight: FontWeight.bold,
+                    //                 color: Colors.white),
+                    //           ),
+                    //         ],
+                    //       ))),
+                    //   onTap: () {},
+                    // ),
                   ],
                 ),
               ),

@@ -21,6 +21,7 @@ class _TrackerTileState extends State<TrackerTile> {
     return Padding(
       padding: EdgeInsets.only(top: 8.0),
       child: Container(
+        width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
             gradient: greyGradient),
@@ -44,30 +45,7 @@ class _TrackerTileState extends State<TrackerTile> {
                 SizedBox(
                   width: 10,
                 ),
-                // Row(
-                //   children: [
-                //     MaterialButton(
-                //       minWidth: 0,
-                //       shape: RoundedRectangleBorder(),
-                //       padding: EdgeInsets.all(0),
-                //       onPressed: () {
-
-                //       },
-                //       child: Icon(Icons.play_arrow_outlined),
-                //     ),
-                //     MaterialButton(
-                //       minWidth: 0,
-                //       shape: CircleBorder(),
-                //       padding: EdgeInsets.all(0),
-                //       onPressed: () async {
-                //         // eventID = documentID
-                //         DatabaseService()
-                //             .deleteEventbyID(widget.tracker.eventID);
-                //       },
-                //       child: Icon(Icons.more_vert),
-                //     ),
-                //   ],
-                // ),
+               
               ],
             ),
           ),

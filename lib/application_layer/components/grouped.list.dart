@@ -1,4 +1,3 @@
-
 library grouped_list;
 
 import 'dart:async';

@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:time_management_app/application_layer/components/get_user_id.dart';
 import 'package:time_management_app/application_layer/loading_screen.dart/loading_screen.dart';
 import 'package:time_management_app/service_layer/auth.dart';
 import 'package:time_management_app/shared/constants.dart';
@@ -20,6 +23,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String email = "";
   String password = "";
   String error = "";
+  String name = "";
 
   @override
   Widget build(BuildContext context) {
@@ -47,9 +51,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(
-                      height: 20,
-                    ),
+                    // TextFormField(
+                    //   decoration:
+                    //       textInputDecoration.copyWith(hintText: "Name"),
+                    //   validator: (val) => val.length < 3
+                    //       ? "Enter a name 3+ chars long"
+                    //       : null,
+                    //   onChanged: (val) {
+                    //     setState(() => name = val);
+                    //   },
+                    //   obscureText: true,
+                    // ),
+                    // SizedBox(
+                    //   height: 20,
+                    // ),
                     TextFormField(
                       decoration:
                           textInputDecoration.copyWith(hintText: "Email"),
@@ -72,6 +87,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       },
                       obscureText: true,
                     ),
+
                     SizedBox(
                       height: 20,
                     ),
@@ -100,13 +116,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         if (_formKey.currentState.validate()) {
                           setState(() => loading = true);
                           dynamic result = await _auth
-                              .registerWithEmailAndPassword(email, password);
+                              .registerWithEmailAndPassword(email, password)
+                              .catchError((_) {
+                            return _;
+                          });
                           if (result == null) {
                             setState(() {
-                              error = "please supply a valid email";
+                              error = "Please supply a valid email";
                               loading = false;
                             });
                           }
+                          getUserID();
+                          
                         }
                       },
                     ),

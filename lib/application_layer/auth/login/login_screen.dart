@@ -1,8 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:time_management_app/application_layer/components/get_user_id.dart';
+import 'package:time_management_app/application_layer/components/google_sign_in.dart';
 import 'package:time_management_app/application_layer/loading_screen.dart/loading_screen.dart';
 import 'package:time_management_app/service_layer/auth.dart';
+import 'package:time_management_app/service_layer/database.dart';
 import 'package:time_management_app/shared/constants.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -20,49 +24,13 @@ class _LoginScreenState extends State<LoginScreen> {
   bool loading = false;
   String error = "";
 
-  // shared preferences
-  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-
   // text field state
   String email = "";
   String password = "";
 
-  //Google Sign-in
-  final GoogleSignIn googleSignIn = GoogleSignIn();
-  Future<String> signInWithGoogle() async {
-    final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
-    final GoogleSignInAuthentication googleSignInAuthentication =
-        await googleSignInAccount.authentication;
-
-    final AuthCredential credential = GoogleAuthProvider.credential(
-      accessToken: googleSignInAuthentication.accessToken,
-      idToken: googleSignInAuthentication.idToken,
-    );
-
-    final UserCredential authResult =
-        await FirebaseAuth.instance.signInWithCredential(credential);
-    final User user = authResult.user;
-
-    assert(!user.isAnonymous);
-    assert(await user.getIdToken() != null);
-
-    final User currentUser = FirebaseAuth.instance.currentUser;
-    assert(user.uid == currentUser.uid);
-
-    return 'signInWithGoogle succeeded: $user';
-  }
   //FirebaseAuth
 
-  void getUserID() async {
-    final SharedPreferences prefs = await _prefs;
-    final FirebaseAuth _auth = FirebaseAuth.instance;
-    final User user = _auth.currentUser;
-    Future<String> uid =
-        prefs.setString("userID", user.uid).then((bool success) {
-      return user.uid;
-    });
-    print(uid);
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -182,7 +150,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              SizedBox(width: 10,),
+                              SizedBox(
+                                width: 10,
+                              ),
                               Container(
                                 height: 20.0,
                                 width: 20.0,
@@ -194,7 +164,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                   shape: BoxShape.circle,
                                 ),
                               ),
-                              SizedBox(width: 15,),
+                              SizedBox(
+                                width: 15,
+                              ),
                               Text(
                                 'Sign in with Google',
                                 style: TextStyle(

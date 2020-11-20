@@ -33,7 +33,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
         color: Colors.black,
         child: Center(
           child: CircularProgressIndicator(
-            backgroundColor: Colors.green,
+            backgroundColor: Colors.indigoAccent,
           ),
         ),
       ),

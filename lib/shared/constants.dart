@@ -23,8 +23,29 @@ const trackerAdderTextInputDecoration = InputDecoration(
     borderSide: BorderSide(color: Colors.transparent),
     borderRadius: BorderRadius.all(Radius.circular(12)),
   ),
-  focusedBorder: OutlineInputBorder(
-    borderSide: BorderSide.none
-  ),
-  
+  focusedBorder: OutlineInputBorder(borderSide: BorderSide.none),
 );
+
+const byDesignGradient = LinearGradient(
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,
+    stops: [
+      0.45,
+      1
+    ],
+    colors: [
+      Color(0xff93291E),
+      Color(0xffED213A),
+    ]);
+
+const kGradientBlueRasperry = LinearGradient(
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,
+    stops: [
+      0.45,
+      1
+    ],
+    colors: [
+      Color(0xff00B4DB),
+      Color(0xff0083B0),
+    ]);

@@ -249,7 +249,7 @@ class _TrackerAdderState extends State<TrackerAdder> {
                                             finishingTime = DateFormat.Hm()
                                                 .format(DateTime.now());
 
-                                            DatabaseService().updateUserData(
+                                            DatabaseService().updateTrackersData(
                                               startingTime,
                                               finishingTime,
                                               eventName,

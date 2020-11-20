@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:time_management_app/application_layer/home/home.dart';
 import 'package:time_management_app/application_layer/loading_screen.dart/loading_screen.dart';
+import 'package:time_management_app/application_layer/screens/home/home.dart';
 
 import 'auth/auth_management/authenticate.dart';
 

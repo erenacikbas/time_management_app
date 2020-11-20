@@ -1,5 +1,5 @@
 version: "Apple Swift version 5.3.1 (swiftlang-1200.0.41 clang-1200.0.32.8)"
-options: "3c83b42b2d25876fe68300c62b0d5d35"
-build_time: [1605599620, 301855000]
+options: "223cb15e407cc95d0b1d67a12725aa9d"
+build_time: [1605599996, 131841000]
 inputs:
-  "/Users/erentuna/Desktop/time_management_app/ios/Runner/AppDelegate.swift": !dirty [1605599109, 901362289]
+  "/Users/erentuna/Desktop/time_management_app/ios/Runner/AppDelegate.swift": [1605599624, 249973708]

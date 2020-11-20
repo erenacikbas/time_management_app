@@ -3,8 +3,13 @@ import 'package:provider/provider.dart';
 import 'package:time_management_app/application_layer/components/tracker_tile.dart';
 import 'package:time_management_app/application_layer/loading_screen.dart/loading_screen.dart';
 import 'package:time_management_app/application_layer/models/trackers.dart';
+import 'package:flutter/foundation.dart';
+import 'package:time_management_app/service_layer/database.dart';
+import 'package:time_management_app/shared/constants.dart';
 
 import 'grouped.list.dart';
+
+final double raidus = 0;
 
 class TrackerList extends StatefulWidget {
   @override
@@ -23,14 +28,13 @@ class _TrackerListState extends State<TrackerList> {
 
   @override
   Widget build(BuildContext context) {
-    
+    final witdh = MediaQuery.of(context).size.width;
     // define data set
     final _trackers = Provider.of<List<Trackers>>(context) ?? [];
 
     if (_trackers != null) {
       return Container(
         child: GroupedListView<dynamic, String>(
-          
           elements: _trackers,
           groupBy: (element) => element.date,
           //indexedItemBuilder: (context,dynamic element, index ) => Text(_trackers[index].name),
@@ -45,8 +49,71 @@ class _TrackerListState extends State<TrackerList> {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
-          itemBuilder: (context, dynamic element) => TrackerTile(
-            tracker: element,
+          itemBuilder: (context, dynamic element) => Dismissible(
+            key: Key(element.eventID),
+            secondaryBackground: Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Container(
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: Align(
+                      alignment: Alignment.centerRight, child: Text("Delete")),
+                ),
+                width: 50 / 2,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    gradient: byDesignGradient),
+                margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
+              ),
+            ),
+
+            background: Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Container(
+                width: 25,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: Colors.lightGreen),
+                margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
+              ),
+            ),
+            // background: Padding(
+            //   padding: const EdgeInsets.only(top: 8.0),
+            //   child: Container(
+            //     decoration: BoxDecoration(
+            //         borderRadius: BorderRadius.circular(12),
+            //         gradient: byDesignGradient),
+            //     margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
+            //   ),
+            // ),
+
+            onDismissed: (direction) {
+              setState(() {
+                DatabaseService().deleteEventbyID(element.eventID);
+              });
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Container(
+                      height: 50,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: Colors.indigoAccent),
+                      margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
+                      child: Center(
+                        child: Text(
+                          "${element.name} dismissed",
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                        ),
+                      )),
+                  backgroundColor: Colors.transparent,
+                  elevation: 0,
+                ),
+              );
+            },
+            child: TrackerTile(
+              tracker: element,
+            ),
           ),
           useStickyGroupSeparators: false,
           //itemComparator: ,

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -37,49 +38,45 @@ class _HomeState extends State<Home> {
     return FutureBuilder(
       future: _userID,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        return Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.indigoAccent,
-            elevation: 0.0,
-            title: Text("Great Tracker"),
-            actions: <Widget>[
-              RawMaterialButton(
-                child: Icon(Icons.person),
-                // onLongPress: () async{
-                //   await _auth.signOut();
-                //   await AuthService().googleSignOut();
-                // },
-                onPressed: () async {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              StreamProvider<List<Users>>.value(
-                                value:
-                                    DatabaseService().userData(snapshot.data),
-                                child: Builder(builder: (context) {
-                                  var snapshot =
-                                      Provider.of<List<Users>>(context);
-                                  if (snapshot == null) {
-                                    return LoadingScreen();
-                                  } else {
-                                    return Profile(snapshot);
-                                  }
-                                }),
-                              )));
-                },
-              ),
-            ],
-          ),
-          body: StreamProvider<List<Trackers>>.value(
-            value: DatabaseService().trackersFromFilteredData(snapshot.data),
-            child: Column(
-              children: [
-                TrackerAdder(
-                  userID: snapshot.data,
+        return CupertinoPageScaffold(
+          child: Scaffold(
+            backgroundColor: Color(0xff252a2d),
+            appBar: AppBar(
+              elevation: 0.0,
+              title: Text("Great Tracker"),
+              actions: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: CupertinoButton(
+                    child: Icon(
+                      Icons.person,
+                      color: Colors.white,
+                    ),
+                    // onLongPress: () async{
+                    //   await _auth.signOut();
+                    //   await AuthService().googleSignOut();
+                    // },
+                    onPressed: () async {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) => Profile()));
+                    },
+                  ),
                 ),
-                Flexible(child: TrackerList()),
               ],
+            ),
+            body: StreamProvider<List<Trackers>>.value(
+              value: DatabaseService().trackersFromFilteredData(snapshot.data),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TrackerAdder(
+                    userID: snapshot.data,
+                  ),
+                  Flexible(child: TrackerList()),
+                ],
+              ),
             ),
           ),
         );

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:time_management_app/application_layer/components/get_user_id.dart';
 import 'package:time_management_app/application_layer/loading_screen.dart/loading_screen.dart';
@@ -33,6 +34,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ? LoadingScreen()
         : Scaffold(
             appBar: AppBar(
+              automaticallyImplyLeading: false,
               backgroundColor: Colors.indigoAccent,
               elevation: 0.0,
               title: Text("Great Tracker"),
@@ -91,11 +93,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     SizedBox(
                       height: 20,
                     ),
-                    InkWell(
+                    CupertinoButton(
                       child: Container(
                           width: width / 3,
                           height: height / 18,
-                          margin: EdgeInsets.only(top: 25),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
                               color: Colors.indigoAccent),
@@ -112,7 +113,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               ),
                             ],
                           ))),
-                      onTap: () async {
+                      onPressed: () async {
                         if (_formKey.currentState.validate()) {
                           setState(() => loading = true);
                           dynamic result = await _auth
@@ -151,9 +152,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     //     }
                     //   },
                     // ),
-                    SizedBox(
-                      height: 12.0,
-                    ),
+                    
                     Text(
                       error,
                       style: TextStyle(color: Colors.red),

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:time_management_app/application_layer/components/tracker_tile.dart';
@@ -34,92 +35,97 @@ class _TrackerListState extends State<TrackerList> {
 
     if (_trackers != null) {
       return Container(
-        child: GroupedListView<dynamic, String>(
-          elements: _trackers,
-          groupBy: (element) => element.date,
-          //indexedItemBuilder: (context,dynamic element, index ) => Text(_trackers[index].name),
-          //groupComparator: (value1, value2) => value2.compareTo(value1),
-          // itemComparator: (item1, item2) =>
-          //         item2.finishingTime.compareTo(item1.finishingTime),
-          groupSeparatorBuilder: (String value) => Padding(
-            padding: const EdgeInsets.only(top: 20.0, bottom: 0.0),
-            child: Text(
-              value,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-          ),
-          itemBuilder: (context, dynamic element) => Dismissible(
-            key: Key(element.eventID),
-            secondaryBackground: Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Container(
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
-                  child: Align(
-                      alignment: Alignment.centerRight, child: Text("Delete")),
-                ),
-                width: 50 / 2,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    gradient: byDesignGradient),
-                margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
+        child: CupertinoScrollbar(
+          controller: ScrollController(),
+          child: GroupedListView<dynamic, String>(
+            elements: _trackers,
+            groupBy: (element) => element.date,
+            //indexedItemBuilder: (context,dynamic element, index ) => Text(_trackers[index].name),
+            //groupComparator: (value1, value2) => value2.compareTo(value1),
+            // itemComparator: (item1, item2) =>
+            //         item2.finishingTime.compareTo(item1.finishingTime),
+            groupSeparatorBuilder: (String value) => Padding(
+              padding: const EdgeInsets.only(top: 20.0, bottom: 0.0),
+              child: Text(
+                
+                value,
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: Colors.white),
               ),
             ),
+            itemBuilder: (context, dynamic element) => Dismissible(
+              key: Key(element.eventID),
+              secondaryBackground: Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Container(
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: Align(
+                        alignment: Alignment.centerRight,
+                        child: Text("Delete")),
+                  ),
+                  width: 50 / 2,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      gradient: byDesignGradient),
+                  margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
+                ),
+              ),
 
-            background: Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Container(
-                width: 25,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: Colors.lightGreen),
-                margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
+              background: Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Container(
+                  width: 25,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: Colors.lightGreen),
+                  margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
+                ),
+              ),
+              // background: Padding(
+              //   padding: const EdgeInsets.only(top: 8.0),
+              //   child: Container(
+              //     decoration: BoxDecoration(
+              //         borderRadius: BorderRadius.circular(12),
+              //         gradient: byDesignGradient),
+              //     margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
+              //   ),
+              // ),
+
+              onDismissed: (direction) {
+                setState(() {
+                  DatabaseService().deleteEventbyID(element.eventID);
+                });
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Container(
+                        height: 50,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: Colors.indigoAccent),
+                        margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
+                        child: Center(
+                          child: Text(
+                            "${element.name} dismissed",
+                            style: TextStyle(color: Colors.white, fontSize: 20),
+                          ),
+                        )),
+                    backgroundColor: Colors.transparent,
+                    elevation: 0,
+                  ),
+                );
+              },
+              child: TrackerTile(
+                tracker: element,
               ),
             ),
-            // background: Padding(
-            //   padding: const EdgeInsets.only(top: 8.0),
-            //   child: Container(
-            //     decoration: BoxDecoration(
-            //         borderRadius: BorderRadius.circular(12),
-            //         gradient: byDesignGradient),
-            //     margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
-            //   ),
-            // ),
-
-            onDismissed: (direction) {
-              setState(() {
-                DatabaseService().deleteEventbyID(element.eventID);
-              });
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Container(
-                      height: 50,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          color: Colors.indigoAccent),
-                      margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
-                      child: Center(
-                        child: Text(
-                          "${element.name} dismissed",
-                          style: TextStyle(color: Colors.white, fontSize: 20),
-                        ),
-                      )),
-                  backgroundColor: Colors.transparent,
-                  elevation: 0,
-                ),
-              );
-            },
-            child: TrackerTile(
-              tracker: element,
-            ),
+            useStickyGroupSeparators: false,
+            //itemComparator: ,
+            floatingHeader: false, // options
+            //order: GroupedListOrder.DESC,
+            groupComparator: (value1, value2) => value2.compareTo(value1),
           ),
-          useStickyGroupSeparators: false,
-          //itemComparator: ,
-          floatingHeader: false, // options
-          //order: GroupedListOrder.DESC,
-          groupComparator: (value1, value2) => value2.compareTo(value1),
         ),
       );
     } else {

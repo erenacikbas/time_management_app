@@ -16,7 +16,8 @@ const greyGradient = LinearGradient(
     colors: [Color(0xffdcdfe0), Color(0xffebedee), Color(0xffe4e7e8)]);
 
 const trackerAdderTextInputDecoration = InputDecoration(
-  fillColor: Color(0xffebedee),
+  fillColor: Color(0xff979ca1),
+  //fillColor: Color(0xffebedee),
   filled: true,
   hintStyle: TextStyle(color: Colors.black),
   enabledBorder: OutlineInputBorder(

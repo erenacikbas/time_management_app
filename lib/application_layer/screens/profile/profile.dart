@@ -1,15 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:time_management_app/application_layer/loading_screen.dart/loading_screen.dart';
 import 'package:time_management_app/application_layer/models/users.dart';
 import 'package:time_management_app/service_layer/auth.dart';
+import 'package:time_management_app/service_layer/database.dart';
 
 import '../../wrapper.dart';
 
 class Profile extends StatefulWidget {
-  final List<Users> snapshot;
-  Profile(this.snapshot);
   @override
   _ProfileState createState() => _ProfileState();
 }
@@ -17,12 +18,23 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   Future<String> _userID;
   final AuthService _auth = AuthService();
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  @override
+  void initState() {
+    super.initState();
+    _userID = _prefs.then((SharedPreferences preferences) {
+      return (preferences.getString("userID") ?? "");
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.height;
     final height = MediaQuery.of(context).size.height;
-    if (widget.snapshot != null) {
-      return Scaffold(
+    final _users = Provider.of<List<Users>>(context) ?? [];
+    final user = _users[0];
+    return CupertinoPageScaffold(
+      child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: true,
           title: Text("Profile"),
@@ -39,20 +51,19 @@ class _ProfileState extends State<Profile> {
                   radius: 88,
                   child: CircleAvatar(
                     radius: 80,
-                    backgroundImage:
-                        NetworkImage("${widget.snapshot.first.profilePicture}"),
+                    backgroundImage: NetworkImage("${user.profilePicture}"),
                   ),
                 ),
                 SizedBox(
                   height: 10,
                 ),
                 Text(
-                  "${widget.snapshot.first.name}",
+                  "${user.name}",
                   style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                 ),
                 Align(
                   alignment: Alignment.bottomCenter,
-                  child: InkWell(
+                  child: CupertinoButton(
                     child: Container(
                         width: width / 5,
                         height: height / 18,
@@ -73,7 +84,7 @@ class _ProfileState extends State<Profile> {
                             ),
                           ],
                         ))),
-                    onTap: () async {
+                    onPressed: () async {
                       await _auth.signOut();
                       await AuthService().googleSignOut();
                       LoadingScreen();
@@ -88,9 +99,7 @@ class _ProfileState extends State<Profile> {
             ),
           ),
         ),
-      );
-    } else {
-      return LoadingScreen();
-    }
+      ),
+    );
   }
 }

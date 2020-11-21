@@ -99,7 +99,10 @@ class _TrackerAdderState extends State<TrackerAdder> {
         width: double.infinity,
         child: Container(
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12), gradient: greyGradient),
+              borderRadius: BorderRadius.circular(12), 
+              //gradient: greyGradient,
+              color: Color(0xff979ca1)
+              ),
           margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
           child: Padding(
             padding: const EdgeInsets.all(10.0),

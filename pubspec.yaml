@@ -11,18 +11,15 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  cloud_firestore: ^0.14.3
   cupertino_icons: ^1.0.1
-  #Front-end dependencies
-
-  #Back-end dependencies
+  firebase_auth: ^0.18.3
   firebase_core: ^0.5.2
-  firebase_auth: "^0.18.3"
+  google_sign_in: ^4.5.1
+  localstorage: ^3.0.3+6
   provider: ^3.1.0
   shared_preferences: ^0.5.12+2
-  cloud_firestore: ^0.14.3
   uuid: 2.2.2
-  google_sign_in: "^4.5.1"
 
 dev_dependencies:
   flutter_test:

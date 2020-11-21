@@ -13,7 +13,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(appBarTheme: AppBarTheme(centerTitle: true,color: Colors.indigoAccent)),
+      theme: ThemeData(
+        textTheme: TextTheme().copyWith(bodyText2: TextStyle(color: Colors.black)),
+        appBarTheme: AppBarTheme(centerTitle: true,color: Color(0xff1f2224))
+        ),
       debugShowCheckedModeBanner: false,
       home: FirebaseCheck(),
     );

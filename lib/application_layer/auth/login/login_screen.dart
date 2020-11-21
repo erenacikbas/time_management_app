@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:time_management_app/application_layer/components/get_user_id.dart';
@@ -30,8 +31,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   //FirebaseAuth
 
-
-
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -40,6 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ? LoadingScreen()
         : Scaffold(
             appBar: AppBar(
+              automaticallyImplyLeading: false,
               backgroundColor: Colors.indigoAccent,
               elevation: 0.0,
               title: Text("Great Tracker"),
@@ -83,21 +83,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                       obscureText: true,
                     ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    SizedBox(
-                      height: 12.0,
-                    ),
+
                     Text(
                       error,
                       style: TextStyle(color: Colors.red),
                     ),
-                    InkWell(
+                    CupertinoButton(
                       child: Container(
                           width: width / 3,
                           height: height / 18,
-                          margin: EdgeInsets.only(top: 25),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
                               color: Colors.indigoAccent),
@@ -114,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ],
                           ))),
-                      onTap: () async {
+                      onPressed: () async {
                         if (_formKey.currentState.validate()) {
                           setState(() => loading = true);
                           dynamic result = await _auth
@@ -138,11 +132,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: Text("Don't you have an account ? Register")),
                     SizedBox(height: 10),
                     //Sign in with Google
-                    InkWell(
+                    CupertinoButton(
                       child: Container(
                           width: width / 1.7,
                           height: height / 18,
-                          margin: EdgeInsets.only(top: 10),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
                               color: Colors.black),
@@ -176,10 +169,10 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ],
                           ))),
-                      onTap: () => signInWithGoogle(),
+                      onPressed: () => signInWithGoogle(),
                     ),
                     //Sign in with Apple
-                    // InkWell(
+                    // CupertinoButton(
                     //   child: Container(
                     //       width: width / 1.7,
                     //       height: height / 18,
@@ -212,7 +205,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     //           ),
                     //         ],
                     //       ))),
-                    //   onTap: () {},
+                    //   onPressed: () {},
                     // ),
                   ],
                 ),

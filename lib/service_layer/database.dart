@@ -1,8 +1,5 @@
-import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:time_management_app/application_layer/models/todos.dart';
 import 'package:time_management_app/application_layer/models/trackers.dart';
@@ -130,7 +127,7 @@ class DatabaseService {
   Future<String> get sharedPreferences async {
     final SharedPreferences prefs = await _prefs;
     print(prefs.getString("userID"));
-    return await prefs.getString("userID");
+    return prefs.getString("userID");
   }
 
   Stream<List<Trackers>> trackersFromFilteredData(String userID) {

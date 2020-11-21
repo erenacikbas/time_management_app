@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import 'package:time_management_app/service_layer/database.dart';
 import 'package:time_management_app/shared/constants.dart';
 
@@ -84,14 +83,6 @@ class _TrackerAdderState extends State<TrackerAdder> {
   Widget build(BuildContext context) {
     //final user = Provider.of<User>(context);
     // vertical divider
-    _verticalDivider() => BoxDecoration(
-          border: Border(
-            right: BorderSide(
-              color: Theme.of(context).dividerColor,
-              width: 0.5,
-            ),
-          ),
-        );
 
     return Padding(
       padding: const EdgeInsets.only(top: 8.0),
@@ -161,7 +152,7 @@ class _TrackerAdderState extends State<TrackerAdder> {
                             Container(
                               padding: EdgeInsets.only(right: 5),
                               child: Text(
-                                "${hoursStr}:${minutesStr}:${secondsStr}",
+                                "$hoursStr:$minutesStr:$secondsStr",
                                 style: TextStyle(
                                   fontSize: 15.0,
                                 ),
@@ -239,7 +230,7 @@ class _TrackerAdderState extends State<TrackerAdder> {
                                             setState(() {
                                               _textEditingController.clear();
                                               duration =
-                                                  "${hoursStr}:${minutesStr}:${secondsStr}";
+                                                  "$hoursStr:$minutesStr:$secondsStr";
 
                                               date = "${DateFormat("d")
                                                   .format(DateTime.now())}/${DateFormat("M")

@@ -44,9 +44,9 @@ class AuthService {
   // register with email & password
   Future registerWithEmailAndPassword(String email, String password) async {
     try {
-      UserCredential result = await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
-      User user = result.user;
+      // UserCredential result = await _auth.createUserWithEmailAndPassword(
+      //     email: email, password: password);
+      // User user = result.user;
       DatabaseService().updateUserData(
           _auth.currentUser.displayName,
           _auth.currentUser.photoURL,
@@ -88,13 +88,13 @@ class AuthService {
 
 // New Function for Great Tracker
 
-Stream<User> authState() {
-  FirebaseAuth _auth = FirebaseAuth.instance;
-  _auth.authStateChanges().listen((User user) {
-    if (user == null) {
-      print("User is currently signed out!");
-    } else {
-      print("User is signed in!");
-    }
-  });
-}
+// Stream<User> authState() {
+//   FirebaseAuth _auth = FirebaseAuth.instance;
+//   _auth.authStateChanges().listen((User user) {
+//     if (user == null) {
+//       print("User is currently signed out!");
+//     } else {
+//       print("User is signed in!");
+//     }
+//   });
+// }

@@ -1,10 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:time_management_app/application_layer/models/trackers.dart';
-import 'package:time_management_app/service_layer/database.dart';
-import 'package:time_management_app/shared/constants.dart';
 
 class TrackerTile extends StatefulWidget {
   final Trackers tracker;
@@ -24,7 +19,8 @@ class _TrackerTileState extends State<TrackerTile> {
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-            gradient: greyGradient
+            //gradient: greyGradient
+            color: Color(0xff979ca0)
             ),
         margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
         child: Padding(

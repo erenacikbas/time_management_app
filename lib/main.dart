@@ -1,24 +1,61 @@
 import 'package:flutter/material.dart';
 // Import the firebase_core plugin
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:time_management_app/application_layer/loading_screen.dart/loading_screen.dart';
-
+import 'package:time_management_app/providers/dark_theme_provider.dart';
+import 'package:time_management_app/shared/dark_theme/dark_theme_styles.dart';
 import 'application_layer/wrapper.dart';
 
-void main() {
+void main() async {
+  Provider.debugCheckInvalidValueType = null;
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
+  SystemChrome.setPreferredOrientations(
+          [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
+      .then((_) {});
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  DarkThemeProvider themeChangeProvider = DarkThemeProvider();
+  @override
+  void initState() {
+    super.initState();
+    getCurrentAppTheme();
+  }
+
+  void getCurrentAppTheme() async {
+    themeChangeProvider.darkTheme =
+        await themeChangeProvider.darkThemePreference.getTheme();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        textTheme: TextTheme().copyWith(bodyText2: TextStyle(color: Colors.black)),
-        appBarTheme: AppBarTheme(centerTitle: true,color: Color(0xff1f2224))
-        ),
-      debugShowCheckedModeBanner: false,
-      home: FirebaseCheck(),
+    return ChangeNotifierProvider(
+      create: (_) {
+        return themeChangeProvider;
+      },
+      child: Consumer<DarkThemeProvider>(
+        builder: (BuildContext context, value, Widget child) {
+          return MaterialApp(
+            theme: Styles.themeData(themeChangeProvider.darkTheme, context),
+            //darkTheme: themeModel.themeData(platformDarkMode: true),
+            // ThemeData(
+            //     textTheme:
+            //         TextTheme().copyWith(bodyText2: TextStyle(color: Colors.black)),
+            //     appBarTheme:
+            //         AppBarTheme(centerTitle: true, color: Color(0xff1f2224))),
+            debugShowCheckedModeBanner: false,
+            home: FirebaseCheck(),
+          );
+        },
+      ),
     );
   }
 }

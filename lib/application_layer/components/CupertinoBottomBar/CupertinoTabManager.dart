@@ -1,5 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:time_management_app/providers/dark_theme_provider.dart';
+import 'package:time_management_app/shared/dark_theme/dark_theme_preference.dart';
+import 'package:time_management_app/shared/dark_theme/dark_theme_styles.dart';
 
 import 'CupertinoBottomBar.dart';
 
@@ -18,11 +22,13 @@ class CupertinoTabManager extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeChange = Provider.of<DarkThemeProvider>(context);
     return CupertinoTabScaffold(
       backgroundColor: Colors.transparent,
       tabBar: CupertinoTabBar(
         currentIndex: currentTab.index,
-        backgroundColor: Color(0xff1f2224),
+        
+        backgroundColor: Styles.themeData(themeChange.darkTheme, context).backgroundColor,
         items: TabItem.getBottomNavigationBarItems(),
         onTap: (index) => TabItemEnum.values[index],
       ),

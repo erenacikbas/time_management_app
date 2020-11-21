@@ -1,14 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:time_management_app/application_layer/loading_screen.dart/loading_screen.dart';
 import 'package:time_management_app/application_layer/models/users.dart';
-import 'package:time_management_app/providers/dark_theme_provider.dart';
 import 'package:time_management_app/service_layer/auth.dart';
-import 'package:time_management_app/shared/constants.dart';
-import 'dart:math';
+import 'package:time_management_app/service_layer/database.dart';
+
 import '../../wrapper.dart';
 
 class Profile extends StatefulWidget {
@@ -16,9 +15,7 @@ class Profile extends StatefulWidget {
   _ProfileState createState() => _ProfileState();
 }
 
-class _ProfileState extends State<Profile> with AutomaticKeepAliveClientMixin {
-  @override
-  bool get wantKeepAlive => true;
+class _ProfileState extends State<Profile> {
   Future<String> _userID;
   final AuthService _auth = AuthService();
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -32,125 +29,77 @@ class _ProfileState extends State<Profile> with AutomaticKeepAliveClientMixin {
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
-    final themeChange = Provider.of<DarkThemeProvider>(context);
     final width = MediaQuery.of(context).size.height;
     final height = MediaQuery.of(context).size.height;
     final _users = Provider.of<List<Users>>(context) ?? [];
     final user = _users[0];
-    var iconColor = Theme.of(context).accentColor;
     return CupertinoPageScaffold(
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: true,
-          title: Text(
-            "Profile",
-          ),
+          title: Text("Profile"),
         ),
-        body: Padding(
-          padding: const EdgeInsets.only(top: 20.0),
-          child: Column(
-            children: [
-              CircleAvatar(
-                backgroundColor: Colors.indigoAccent,
-                radius: 88,
-                child: CircleAvatar(
-                  radius: 80,
-                  backgroundImage: NetworkImage("${user.profilePicture}"),
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 40.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                CircleAvatar(
+                  backgroundColor: Colors.indigoAccent,
+                  radius: 88,
+                  child: CircleAvatar(
+                    radius: 80,
+                    backgroundImage: NetworkImage("${user.profilePicture}"),
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10.0),
-                child: Text(
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
                   "${user.name}",
-                  style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                 ),
-              ),
-              Expanded(
-                child: CustomScrollView(
-                  slivers: <Widget>[
-                    ListTileTheme(
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: SliverList(
-                        delegate: SliverChildListDelegate([
-                          ListTile(
-                            title: Text("Dark Mode"),
-                            onTap: () {
-                              print(Theme.of(context).brightness);
-                              //switchDarkMode(context);
-                              print(Theme.of(context).brightness);
-                            },
-                            leading: Transform.rotate(
-                              angle: -pi,
-                              child: Icon(
-                                Theme.of(context).brightness == Brightness.light
-                                    ? Icons.brightness_5
-                                    : Icons.brightness_2,
-                                color: iconColor,
-                              ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: CupertinoButton(
+                    child: Container(
+                        width: width / 5,
+                        height: height / 18,
+                        margin: EdgeInsets.only(top: 25),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Colors.indigoAccent),
+                        child: Center(
+                            child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            Text(
+                              'Sign out',
+                              style: TextStyle(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
                             ),
-                            trailing: CupertinoSwitch(
-                                activeColor: Theme.of(context).accentColor,
-                                value: themeChange.darkTheme,
-                                onChanged: (bool value) {
-                                  setState(() {
-                                    themeChange.darkTheme = value;
-                                  });
-                                }),
-                          ),
-                          Align(
-                            alignment: Alignment.bottomCenter,
-                            child: CupertinoButton(
-                              child: Container(
-                                  width: width / 5,
-                                  height: height / 18,
-                                  margin: EdgeInsets.only(top: 25),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: kAppIndigo),
-                                  child: Center(
-                                      child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: <Widget>[
-                                      Text(
-                                        'Sign out',
-                                        style: TextStyle(
-                                            fontSize: 16.0,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white),
-                                      ),
-                                    ],
-                                  ))),
-                              onPressed: () async {
-                                await _auth.signOut();
-                                await AuthService().googleSignOut();
-                                LoadingScreen();
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            Wrapper()));
-                              },
-                            ),
-                          ),
-                        ]),
-                      ),
-                    ),
-                  ],
+                          ],
+                        ))),
+                    onPressed: () async {
+                      await _auth.signOut();
+                      await AuthService().googleSignOut();
+                      LoadingScreen();
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) => Wrapper()));
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 }
-

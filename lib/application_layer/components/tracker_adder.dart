@@ -100,8 +100,8 @@ class _TrackerAdderState extends State<TrackerAdder> {
         child: Container(
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12), 
-              gradient: greyGradient,
-              //color: Color(0xff979ca1)
+              //gradient: greyGradient,
+              color: Color(0xff979ca1)
               ),
           margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
           child: Padding(
@@ -114,7 +114,6 @@ class _TrackerAdderState extends State<TrackerAdder> {
                     Flexible(
                       flex: 5,
                       child: TextFormField(
-                        style: TextStyle(color: Colors.black),
                         cursorColor: Colors.indigoAccent,
                         key: _formKey,
                         controller: _textEditingController,
@@ -125,7 +124,6 @@ class _TrackerAdderState extends State<TrackerAdder> {
                         },
                         decoration: trackerAdderTextInputDecoration.copyWith(
                           hintText: "What are you working on ?",
-                          
                           // focusedBorder: OutlineInputBorder(
                           //     borderSide:
                           //         BorderSide(color: Colors.blueGrey, width: 2.0)),
@@ -215,7 +213,7 @@ class _TrackerAdderState extends State<TrackerAdder> {
                                           shape: CircleBorder(),
                                           padding: EdgeInsets.all(0),
                                           onPressed: () {},
-                                          child: Icon(Icons.more_vert,color: Colors.black,)),
+                                          child: Icon(Icons.more_vert)),
                                     ],
                                   )
                                 : Row(

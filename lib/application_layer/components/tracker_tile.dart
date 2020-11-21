@@ -24,7 +24,8 @@ class _TrackerTileState extends State<TrackerTile> {
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-            gradient: greyGradient
+            //gradient: greyGradient
+            color: Color(0xff979ca0)
             ),
         margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
         child: Padding(

@@ -40,8 +40,7 @@ class _HomeState extends State<Home> {
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         return CupertinoPageScaffold(
           child: Scaffold(
-            // old
-            //backgroundColor: Color(0xff252a2d),
+            backgroundColor: Color(0xff252a2d),
             appBar: AppBar(
               elevation: 0.0,
               title: Text("Great Tracker"),
@@ -69,16 +68,14 @@ class _HomeState extends State<Home> {
             ),
             body: StreamProvider<List<Trackers>>.value(
               value: DatabaseService().trackersFromFilteredData(snapshot.data),
-              child: CupertinoScrollbar(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    TrackerAdder(
-                      userID: snapshot.data,
-                    ),
-                    Flexible(child: TrackerList()),
-                  ],
-                ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TrackerAdder(
+                    userID: snapshot.data,
+                  ),
+                  Flexible(child: TrackerList()),
+                ],
               ),
             ),
           ),

@@ -29,7 +29,6 @@ class _TrackerListState extends State<TrackerList> {
 
   @override
   Widget build(BuildContext context) {
-    final witdh = MediaQuery.of(context).size.width;
     // define data set
     final _trackers = Provider.of<List<Trackers>>(context) ?? [];
 

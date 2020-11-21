@@ -7,7 +7,6 @@ import 'package:time_management_app/application_layer/components/CupertinoBottom
 import 'package:time_management_app/application_layer/components/CupertinoBottomBar/CupertinoTabManager.dart';
 import 'package:time_management_app/application_layer/loading_screen.dart/loading_screen.dart';
 import 'package:time_management_app/application_layer/models/users.dart';
-import 'package:time_management_app/application_layer/screens/home/home.dart';
 import 'package:time_management_app/service_layer/database.dart';
 
 import 'auth/auth_management/authenticate.dart';

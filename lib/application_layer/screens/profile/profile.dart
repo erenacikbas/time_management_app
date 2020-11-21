@@ -1,12 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:time_management_app/application_layer/loading_screen.dart/loading_screen.dart';
 import 'package:time_management_app/application_layer/models/users.dart';
 import 'package:time_management_app/service_layer/auth.dart';
-import 'package:time_management_app/service_layer/database.dart';
 
 import '../../wrapper.dart';
 
@@ -16,15 +13,10 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  Future<String> _userID;
   final AuthService _auth = AuthService();
-  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   @override
   void initState() {
     super.initState();
-    _userID = _prefs.then((SharedPreferences preferences) {
-      return (preferences.getString("userID") ?? "");
-    });
   }
 
   @override

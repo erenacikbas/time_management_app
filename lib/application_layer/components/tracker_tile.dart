@@ -1,10 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:time_management_app/application_layer/models/trackers.dart';
-import 'package:time_management_app/service_layer/database.dart';
-import 'package:time_management_app/shared/constants.dart';
 
 class TrackerTile extends StatefulWidget {
   final Trackers tracker;

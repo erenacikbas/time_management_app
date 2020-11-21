@@ -1,15 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:time_management_app/application_layer/components/get_user_id.dart';
 import 'package:time_management_app/application_layer/components/google_sign_in.dart';
 import 'package:time_management_app/application_layer/loading_screen.dart/loading_screen.dart';
 import 'package:time_management_app/service_layer/auth.dart';
-import 'package:time_management_app/service_layer/database.dart';
 import 'package:time_management_app/shared/constants.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginScreen extends StatefulWidget {
   final Function toogleView;

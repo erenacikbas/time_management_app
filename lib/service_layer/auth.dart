@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'database.dart';
 
 class AuthService {
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  Future<String> _userID;
   // firebaseAuth instance
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
@@ -28,6 +31,7 @@ class AuthService {
       if (DatabaseService().userData(user.uid) == null) {
         DatabaseService().updateUserData(
             _auth.currentUser.displayName,
+            _auth.currentUser.email,
             _auth.currentUser.photoURL,
             [],
             _auth.currentUser.uid,
@@ -42,17 +46,26 @@ class AuthService {
   }
 
   // register with email & password
-  Future registerWithEmailAndPassword(String email, String password) async {
+  Future registerWithEmailAndPassword(String email, String password, String name) async {
+    
+    _userID = _prefs.then((SharedPreferences preferences) {
+      return (preferences.getString("userID") ?? "");
+    });
     try {
+      UserCredential result = await _auth.createUserWithEmailAndPassword(
+        email: email, password: password);
+      User user = result.user;
+
       // UserCredential result = await _auth.createUserWithEmailAndPassword(
       //     email: email, password: password);
       // User user = result.user;
       DatabaseService().updateUserData(
-          _auth.currentUser.displayName,
-          _auth.currentUser.photoURL,
+          name,
+          user.email,
+          "",
           [],
-          _auth.currentUser.uid,
-          _auth.currentUser.tenantId,
+          user.uid,
+          "",
           Timestamp.now());
 
       // create a new document for the user with uid

@@ -6,6 +6,7 @@ import 'package:time_management_app/application_layer/components/tracker_adder.d
 import 'package:time_management_app/application_layer/components/tracker_list.dart';
 import 'package:time_management_app/application_layer/models/trackers.dart';
 import 'package:time_management_app/application_layer/screens/profile/profile.dart';
+import 'package:time_management_app/service_layer/auth.dart';
 import 'package:time_management_app/service_layer/database.dart';
 
 
@@ -15,6 +16,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final AuthService _auth = AuthService();
 
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   Future<String> _userID;
@@ -24,6 +26,8 @@ class _HomeState extends State<Home> {
     _userID = _prefs.then((SharedPreferences preferences) {
       return (preferences.getString("userID") ?? "");
     });
+    //_auth.signOut();
+    
     //DatabaseService().sortUserData();
   }
 
@@ -52,6 +56,7 @@ class _HomeState extends State<Home> {
                     //   await AuthService().googleSignOut();
                     // },
                     onPressed: () async {
+                      print(await _userID);
                       Navigator.push(
                           context,
                           MaterialPageRoute(

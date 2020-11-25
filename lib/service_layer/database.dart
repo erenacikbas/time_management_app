@@ -179,6 +179,7 @@ class DatabaseService {
 
   Future updateUserData(
     String name,
+    String email,
     String profilePicture,
     List<String> friends,
     String userID,
@@ -187,6 +188,7 @@ class DatabaseService {
   ) async {
     return await usersCollection.doc(userID).set({
       "name": name,
+      "email": email,
       "profilePicture" : profilePicture,
       "userID" : userID,
       "userName" : userName,
@@ -199,6 +201,7 @@ class DatabaseService {
     return snapshot.docs.map((doc) {
       return Users(
         createdAt: doc.data()["craetedAt"],
+        email: doc.data()["email"],
         friends: doc.data()["friends"],
         name: doc.data()["name"],
         userName: doc.data()["userName"],

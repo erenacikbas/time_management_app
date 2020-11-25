@@ -23,6 +23,7 @@ class _ProfileState extends State<Profile> with AutomaticKeepAliveClientMixin {
   @override
   void initState() {
     super.initState();
+    print(_userID);
   }
 
   @override
@@ -33,6 +34,7 @@ class _ProfileState extends State<Profile> with AutomaticKeepAliveClientMixin {
     final height = MediaQuery.of(context).size.height;
     final _users = Provider.of<List<Users>>(context) ?? [];
     final user = _users[0];
+    print(user);
     var iconColor = Theme.of(context).accentColor;
     return CupertinoPageScaffold(
       child: Scaffold(
@@ -51,7 +53,7 @@ class _ProfileState extends State<Profile> with AutomaticKeepAliveClientMixin {
                 radius: 88,
                 child: CircleAvatar(
                   radius: 80,
-                  backgroundImage: NetworkImage("${user.profilePicture}"),
+                  backgroundImage: NetworkImage("${user.profilePicture.isEmpty ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLuECLXQrCdU1e1npz8Y0NAHi7xqilHSa2DVrpWVDDmGWSz3W_5ApcsAjRPeW37__YUvcGQlxYca1jBhcWgAV0CLHtWbv09qU&usqp=CAU&ec=45730948" : user.profilePicture}"),
                 ),
               ),
               SizedBox(

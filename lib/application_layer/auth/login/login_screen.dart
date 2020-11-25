@@ -1,3 +1,4 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:time_management_app/application_layer/components/get_user_id.dart';
@@ -33,11 +34,15 @@ class _LoginScreenState extends State<LoginScreen> {
     return loading
         ? LoadingScreen()
         : Scaffold(
+            backgroundColor: Colors.white,
             appBar: AppBar(
               automaticallyImplyLeading: false,
-              backgroundColor: Colors.indigoAccent,
+              backgroundColor: Colors.white,
               elevation: 0.0,
-              title: Text("Great Tracker"),
+              title: Text(
+                "Great Tracker",
+                style: TextStyle(color: Colors.black, fontSize: 25),
+              ),
               // actions: <Widget>[
               //   FlatButton.icon(
               //     icon: Icon(Icons.person),
@@ -47,36 +52,60 @@ class _LoginScreenState extends State<LoginScreen> {
               // ],
             ),
             body: Container(
-              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+              padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 50.0),
               child: Form(
                 key: _formKey,
                 child: Column(
+                  mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(
-                      height: 20.0,
-                    ),
-                    TextFormField(
-                      decoration:
-                          textInputDecoration.copyWith(hintText: "Email"),
-                      validator: (val) => val.isEmpty ? "Enter an email" : null,
-                      onChanged: (val) {
-                        setState(() => email = val);
-                      },
+                    Padding(
+                      padding: const EdgeInsets.only(top: 5.0),
+                      child: Container(
+                          height: height / 3,
+                          child: Image(
+                            image: AssetImage("assets/login_background.png"),
+                          )),
                     ),
                     SizedBox(
-                      height: 20,
+                      height: 15.0,
                     ),
-                    TextFormField(
-                      decoration:
-                          textInputDecoration.copyWith(hintText: "Password"),
-                      validator: (val) => val.length < 6
-                          ? "Enter a password 6+ chars long"
-                          : null,
-                      onChanged: (val) {
-                        setState(() => password = val);
-                      },
-                      obscureText: true,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                      child: TextFormField(
+                        textAlign: TextAlign.center,
+                        style: kTextFormFieldStyle,
+                        decoration: kLoginScreenTextInputDecoration.copyWith(
+                            hintText: "Email"),
+                        validator: (val) {
+                              if(val.isEmpty) {return "Empty";}
+                              else if (! EmailValidator.validate(val)) {
+                                return "Email is not valid";
+                              }
+                              },
+                        onChanged: (val) {
+                          setState(() => email = val);
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                      child: TextFormField(
+                        textAlign: TextAlign.center,
+                        style: kTextFormFieldStyle,
+                        decoration: kLoginScreenTextInputDecoration.copyWith(
+                            hintText: "Password"),
+                        validator: (val) => val.length < 6
+                            ? "Enter a password 6+ chars long"
+                            : null,
+                        onChanged: (val) {
+                          setState(() => password = val);
+                        },
+                        obscureText: true,
+                      ),
                     ),
 
                     Text(

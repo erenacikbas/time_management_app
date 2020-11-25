@@ -28,6 +28,7 @@ Future<String> signInWithGoogle() async {
 
   DatabaseService().updateUserData(
       currentUser.displayName,
+      currentUser.email,
       currentUser.photoURL,
       [],
       currentUser.uid,

@@ -9,6 +9,26 @@ const textInputDecoration = InputDecoration(
       borderSide: BorderSide(color: Colors.blueGrey, width: 2.0)),
 );
 
+const kLoginScreenTextInputDecoration = InputDecoration(
+    fillColor: Color(0xfff4f5f4),
+    errorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(30)),
+         borderSide: BorderSide.none),
+    focusedErrorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(30)),
+         borderSide: BorderSide.none),
+    filled: true,
+    enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.all(
+          (Radius.circular(30)),
+        ),
+        borderSide: BorderSide.none),
+   // border: InputBorder.none
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(30)),
+         borderSide: BorderSide.none),
+    );
+
 const greyGradient = LinearGradient(
     begin: Alignment.centerLeft,
     end: Alignment.centerRight,
@@ -21,7 +41,7 @@ const trackerAdderTextInputDecoration = InputDecoration(
   fillColor: Colors.transparent,
   filled: true,
   hintStyle: TextStyle(color: Colors.black),
-  
+
   enabledBorder: OutlineInputBorder(
     borderSide: BorderSide(color: Colors.transparent),
     borderRadius: BorderRadius.all(Radius.circular(12)),
@@ -53,5 +73,6 @@ const kGradientBlueRasperry = LinearGradient(
       Color(0xff0083B0),
     ]);
 
-
 const kAppIndigo = Color(0xff3938d5);
+
+const kTextFormFieldStyle = TextStyle(color: Colors.black);

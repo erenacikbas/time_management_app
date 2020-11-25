@@ -76,3 +76,13 @@ const kGradientBlueRasperry = LinearGradient(
 const kAppIndigo = Color(0xff3938d5);
 
 const kTextFormFieldStyle = TextStyle(color: Colors.black);
+
+
+// * Home Screen Constant
+const String kWelcomeHeading = "Hello,\n";
+const TextStyle kWelcomeHeadingStyle = TextStyle(
+  color: Colors.white,
+  fontSize: 45,
+  fontWeight: FontWeight.bold
+);
+const String kAppBarTitle = "Dashboard";

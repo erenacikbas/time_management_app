@@ -1,88 +1,48 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:time_management_app/application_layer/components/tracker_adder.dart';
-import 'package:time_management_app/application_layer/components/tracker_list.dart';
-import 'package:time_management_app/application_layer/models/trackers.dart';
-import 'package:time_management_app/application_layer/screens/profile/profile.dart';
-import 'package:time_management_app/service_layer/auth.dart';
-import 'package:time_management_app/service_layer/database.dart';
+import 'package:time_management_app/application_layer/models/users.dart';
+import 'package:time_management_app/shared/constants.dart';
 
-
-class Home extends StatefulWidget {
-  @override
-  _HomeState createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  final AuthService _auth = AuthService();
-
-  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  Future<String> _userID;
-  @override
-  void initState() {
-    super.initState();
-    _userID = _prefs.then((SharedPreferences preferences) {
-      return (preferences.getString("userID") ?? "");
-    });
-    //_auth.signOut();
-    
-    //DatabaseService().sortUserData();
-  }
-
+class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _userID,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        return CupertinoPageScaffold(
-          child: Scaffold(
-            // old
-            //backgroundColor: Color(0xff252a2d),
-            appBar: AppBar(
-              elevation: 0.0,
-              title: Text("Great Tracker"),
-              actions: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
-                  child: CupertinoButton(
-                    child: Icon(
-                      Icons.person,
-                      color: Colors.white,
-                    ),
-                    // onLongPress: () async{
-                    //   await _auth.signOut();
-                    //   await AuthService().googleSignOut();
-                    // },
-                    onPressed: () async {
-                      print(await _userID);
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (BuildContext context) => Profile()));
-                    },
-                  ),
-                ),
-              ],
-            ),
-            body: StreamProvider<List<Trackers>>.value(
-              value: DatabaseService().trackersFromFilteredData(snapshot.data),
-              child: CupertinoScrollbar(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    TrackerAdder(
-                      userID: snapshot.data,
-                    ),
-                    Flexible(child: TrackerList()),
-                  ],
-                ),
+    final _users = Provider.of<List<Users>>(context) ?? [];
+    final user = _users[0];
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        centerTitle: false,
+        title: Text(
+          kAppBarTitle,
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 15.0,bottom: 5),
+            child: CircleAvatar(
+              backgroundColor: Colors.indigoAccent,
+              radius: 24,
+              child: CircleAvatar(
+                radius: 20,
+                backgroundImage: NetworkImage(
+                    "${user.profilePicture.isEmpty ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLuECLXQrCdU1e1npz8Y0NAHi7xqilHSa2DVrpWVDDmGWSz3W_5ApcsAjRPeW37__YUvcGQlxYca1jBhcWgAV0CLHtWbv09qU&usqp=CAU&ec=45730948" : user.profilePicture}"),
               ),
             ),
           ),
-        );
-      },
+        ],
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 15.0, top: 30),
+          child: Column(
+            children: [
+              Text(
+                "$kWelcomeHeading${user.name} 👋",
+                style: kWelcomeHeadingStyle,
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

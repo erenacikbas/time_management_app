@@ -4,6 +4,7 @@ import 'package:time_management_app/application_layer/models/users.dart';
 import 'package:time_management_app/shared/constants.dart';
 
 class Home extends StatelessWidget {
+  
   @override
   Widget build(BuildContext context) {
     final _users = Provider.of<List<Users>>(context) ?? [];

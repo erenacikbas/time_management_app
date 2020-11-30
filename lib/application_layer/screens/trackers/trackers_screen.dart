@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -9,7 +10,6 @@ import 'package:time_management_app/application_layer/models/users.dart';
 import 'package:time_management_app/application_layer/screens/profile/profile.dart';
 import 'package:time_management_app/service_layer/auth.dart';
 import 'package:time_management_app/service_layer/database.dart';
-
 
 class TrackerScreen extends StatefulWidget {
   @override
@@ -28,13 +28,21 @@ class _TrackerScreenState extends State<TrackerScreen> {
       return (preferences.getString("userID") ?? "");
     });
     //_auth.signOut();
-    
+
     //DatabaseService().sortUserData();
   }
 
   @override
   Widget build(BuildContext context) {
-    
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print('Got a message whilst in the foreground!');
+      print('Message data: ${message.data}');
+
+      if (message.notification != null) {
+        print('Message also contained a notification: ${message.notification}');
+      }
+    });
+
     return FutureBuilder(
       future: _userID,
       builder: (BuildContext context, AsyncSnapshot snapshot) {

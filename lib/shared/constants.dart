@@ -10,24 +10,35 @@ const textInputDecoration = InputDecoration(
 );
 
 const kLoginScreenTextInputDecoration = InputDecoration(
-    fillColor: Color(0xfff4f5f4),
-    errorBorder: OutlineInputBorder(
+  fillColor: Color(0xfff4f5f4),
+  errorBorder: OutlineInputBorder(
       borderRadius: BorderRadius.all(Radius.circular(30)),
-         borderSide: BorderSide.none),
-    focusedErrorBorder: OutlineInputBorder(
+      borderSide: BorderSide.none),
+  focusedErrorBorder: OutlineInputBorder(
       borderRadius: BorderRadius.all(Radius.circular(30)),
-         borderSide: BorderSide.none),
-    filled: true,
-    enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.all(
-          (Radius.circular(30)),
-        ),
-        borderSide: BorderSide.none),
-   // border: InputBorder.none
-    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide.none),
+  filled: true,
+  enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.all(
+        (Radius.circular(30)),
+      ),
+      borderSide: BorderSide.none),
+  // border: InputBorder.none
+  focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.all(Radius.circular(30)),
-         borderSide: BorderSide.none),
-    );
+      borderSide: BorderSide.none),
+);
+
+const kAddingTodoInputDecoration = InputDecoration(
+  hintStyle: TextStyle(color: Colors.grey,fontSize: 18),
+  fillColor: Colors.transparent,
+  errorBorder: OutlineInputBorder(borderSide: BorderSide.none),
+  focusedErrorBorder: OutlineInputBorder(borderSide: BorderSide.none),
+  filled: true,
+  enabledBorder: OutlineInputBorder(borderSide: BorderSide.none),
+  // border: InputBorder.none
+  focusedBorder: OutlineInputBorder(borderSide: BorderSide.none),
+);
 
 const greyGradient = LinearGradient(
     begin: Alignment.centerLeft,
@@ -49,7 +60,7 @@ const trackerAdderTextInputDecoration = InputDecoration(
   focusedBorder: OutlineInputBorder(borderSide: BorderSide.none),
 );
 
-const byDesignGradient = LinearGradient(
+const kRedGradient = LinearGradient(
     begin: Alignment.centerLeft,
     end: Alignment.centerRight,
     stops: [
@@ -77,12 +88,8 @@ const kAppIndigo = Color(0xff3938d5);
 
 const kTextFormFieldStyle = TextStyle(color: Colors.black);
 
-
 // * Home Screen Constant
 const String kWelcomeHeading = "Hello,\n";
-const TextStyle kWelcomeHeadingStyle = TextStyle(
-  color: Colors.white,
-  fontSize: 45,
-  fontWeight: FontWeight.bold
-);
+const TextStyle kWelcomeHeadingStyle =
+    TextStyle(color: Colors.white, fontSize: 45, fontWeight: FontWeight.bold);
 const String kAppBarTitle = "Dashboard";

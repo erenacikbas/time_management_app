@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Todos {
+class TodoItems {
   final Timestamp createdAt;
   final String eventID;
   final bool isDone;
-  final String task;
+  final String todo;
   final String userID;
 
-  Todos({this.createdAt,this.eventID,this.isDone,this.task,this.userID});
+  TodoItems({this.createdAt,this.eventID,this.isDone,this.todo,this.userID});
 }

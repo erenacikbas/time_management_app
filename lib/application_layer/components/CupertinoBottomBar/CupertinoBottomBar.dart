@@ -3,7 +3,7 @@ import 'package:time_management_app/application_layer/screens/analyze/analyze.da
 import 'package:time_management_app/application_layer/screens/home/home.dart';
 import 'package:time_management_app/application_layer/screens/trackers/trackers_screen.dart';
 import 'package:time_management_app/application_layer/screens/profile/profile.dart';
-import 'package:time_management_app/application_layer/screens/todos/todos.dart';
+import 'package:time_management_app/application_layer/screens/todos/todos_screen.dart';
 
 enum TabItemEnum { Trackers, Todos,Home, Analyze, Profile }
 
@@ -17,36 +17,38 @@ class TabItem {
           activeIcon: Icon(
             Icons.view_agenda,
             size: 30,
-            color: Color(0xffFFE44B)
+            //Color(0xffFFE44B)
+            //color: Colors.black
           ),
           icon: Icon(
-            Icons.view_agenda,
+            Icons.view_agenda_outlined,
             size: 30,
-            color: Colors.white,
+            //color: Colors.black
           )),
       // * TODOs
       BottomNavigationBarItem(
           activeIcon: Icon(
-            Icons.rule,
-            size: 30,
-            color: Color(0xffFFE44B),
+            Icons.rule_outlined,
+            size: 31,
+            //color: Colors.black,
           ),
           icon: Icon(
             Icons.rule,
+            
             size: 30,
-            color: Colors.white,
+            //color: Colors.black,
           )),
       // * Home - Dashboard
       BottomNavigationBarItem(
         activeIcon: Icon(
           Icons.home,
           size: 30,
-          color: Color(0xffFFE44B),
+          //color: Colors.black,
         ),
         icon: Icon(
-          Icons.home,
+          Icons.home_outlined,
           size: 30,
-          color: Colors.white,
+          //color: Colors.black,
         ),
       ),
       // * Analyze
@@ -54,24 +56,24 @@ class TabItem {
           activeIcon: Icon(
             Icons.assessment,
             size: 30,
-            color: Color(0xffFFE44B),
+            //color: Colors.black,
           ),
           icon: Icon(
-            Icons.assessment,
+            Icons.assessment_outlined,
             size: 30,
-            color: Colors.white,
+            //color: Colors.black,
           )),
       // * Profile
       BottomNavigationBarItem(
           activeIcon: Icon(
             Icons.person,
             size: 30,
-            color: Color(0xffFFE44B),
+            //color: Colors.black,
           ),
           icon: Icon(
-            Icons.person,
+            Icons.person_outline,
             size: 30,
-            color: Colors.white,
+            //color: Colors.black,
           )),
     ]);
 

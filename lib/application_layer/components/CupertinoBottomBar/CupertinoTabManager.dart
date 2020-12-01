@@ -27,7 +27,7 @@ class CupertinoTabManager extends StatelessWidget {
       backgroundColor: Colors.transparent,
       tabBar: CupertinoTabBar(
         currentIndex: currentTab.index,
-        
+        inactiveColor: Styles.themeData(themeChange.darkTheme, context).iconTheme.color,
         backgroundColor: Styles.themeData(themeChange.darkTheme, context).backgroundColor,
         items: TabItem.getBottomNavigationBarItems(),
         onTap: (index) => TabItemEnum.values[index],

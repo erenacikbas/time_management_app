@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:time_management_app/application_layer/models/todos.dart';
@@ -30,6 +29,7 @@ class DatabaseService {
       FirebaseFirestore.instance.collection("users");
 
   // Future createNewUser() async {
+
   //   return await trackersCollection.add({"uid": uid});
   // }
 
@@ -77,17 +77,17 @@ class DatabaseService {
       "createdAt": createdAt,
       "eventID": eventID,
       "isDone": isDone,
-      "task": task,
+      "todo": task,
       "userID": userID,
     });
   }
 
-  List<Todos> _todosListFromSnapshot(QuerySnapshot snapshot) {
+  List<TodoItems> _todosListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
-      return Todos(
-        createdAt: doc.data()["craetedAt"],
+      return TodoItems(
+        createdAt: doc.data()["createdAt"],
         eventID: doc.data()["eventID"],
-        task: doc.data()["task"],
+        todo: doc.data()["todo"],
         isDone: doc.data()["isDone"],
         userID: doc.data()["userID"],
       );
@@ -150,21 +150,33 @@ class DatabaseService {
 
   // * Todos
   // get todos stream
-  Stream<List<Todos>> get todos {
+  Stream<List<TodoItems>> get todos {
     return todosCollection.snapshots().map(_todosListFromSnapshot);
   }
 
   // user specified todos
-  Stream<List<Todos>> todosFromFilteredData(String userID) {
+  Stream<List<TodoItems>> todosFromFilteredData(String userID) {
     return todosCollection
         .where("userID", isEqualTo: userID)
         .snapshots()
         .map(_todosListFromSnapshot);
   }
 
+  Future<void> deleteTodoByEventID(documentID) async {
+    return todosCollection
+        .doc(documentID)
+        .delete()
+        .then((value) => print("Selected Event: documentID Deleted!"))
+        .catchError((error) => print("Failed to delete user: $error"));
+  }
+
   // set isDone true
   Future<void> setIsDoneTrue(documentID) async {
-    return todosCollection.doc(documentID).set({"isDone": true});
+    return todosCollection.doc(documentID).update({"isDone" : true});
+  }
+
+  Future<void> setIsDoneFalse(documentId) async{
+    return todosCollection.doc(documentId).update({"isDone" : false});
   }
 
   // ************************************
@@ -189,11 +201,11 @@ class DatabaseService {
     return await usersCollection.doc(userID).set({
       "name": name,
       "email": email,
-      "profilePicture" : profilePicture,
-      "userID" : userID,
-      "userName" : userName,
-      "friends" : friends,
-      "createdAt" : createdAt,
+      "profilePicture": profilePicture,
+      "userID": userID,
+      "userName": userName,
+      "friends": friends,
+      "createdAt": createdAt,
     });
   }
 
@@ -211,9 +223,7 @@ class DatabaseService {
     }).toList();
   }
 
-
-
-   Stream<List<Users>> userData(String userID) {
+  Stream<List<Users>> userData(String userID) {
     return usersCollection
         .where("userID", isEqualTo: userID)
         .snapshots()

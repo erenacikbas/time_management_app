@@ -7,6 +7,7 @@ import 'package:time_management_app/application_layer/models/users.dart';
 import 'package:time_management_app/providers/dark_theme_provider.dart';
 import 'package:time_management_app/service_layer/auth.dart';
 import 'package:time_management_app/shared/constants.dart';
+import 'package:time_management_app/shared/dark_theme/dark_theme_styles.dart';
 import 'dart:math';
 import '../../wrapper.dart';
 
@@ -28,6 +29,7 @@ class _ProfileState extends State<Profile> with AutomaticKeepAliveClientMixin {
 
   @override
   Widget build(BuildContext context) {
+    //_auth.signOut();
     super.build(context);
     final themeChange = Provider.of<DarkThemeProvider>(context);
     final width = MediaQuery.of(context).size.height;
@@ -35,7 +37,7 @@ class _ProfileState extends State<Profile> with AutomaticKeepAliveClientMixin {
     final _users = Provider.of<List<Users>>(context) ?? [];
     final user = _users[0];
     print(user);
-    var iconColor = Theme.of(context).accentColor;
+    var iconColor = Styles.themeData(themeChange.darkTheme, context).iconTheme.color;
     return CupertinoPageScaffold(
       child: Scaffold(
         appBar: AppBar(
@@ -50,7 +52,7 @@ class _ProfileState extends State<Profile> with AutomaticKeepAliveClientMixin {
             children: [
               CircleAvatar(
                 backgroundColor: Colors.indigoAccent,
-                radius: 88,
+                radius: 85,
                 child: CircleAvatar(
                   radius: 80,
                   backgroundImage: NetworkImage("${user.profilePicture.isEmpty ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLuECLXQrCdU1e1npz8Y0NAHi7xqilHSa2DVrpWVDDmGWSz3W_5ApcsAjRPeW37__YUvcGQlxYca1jBhcWgAV0CLHtWbv09qU&usqp=CAU&ec=45730948" : user.profilePicture}"),

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:time_management_app/application_layer/models/trackers.dart';
 import 'package:time_management_app/shared/constants.dart';
 
+
 class TrackerTile extends StatefulWidget {
   final Trackers tracker;
-
   TrackerTile({this.tracker});
 
   @override

@@ -7,6 +7,7 @@ import 'package:time_management_app/application_layer/loading_screen.dart/loadin
 import 'package:time_management_app/providers/dark_theme_provider.dart';
 import 'package:time_management_app/shared/dark_theme/dark_theme_styles.dart';
 import 'application_layer/wrapper.dart';
+import 'package:flutter/foundation.dart';
 
 void main() async {
   Provider.debugCheckInvalidValueType = null;
@@ -37,6 +38,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    print(themeChangeProvider.darkTheme);
     return ChangeNotifierProvider(
       create: (_) {
         return themeChangeProvider;

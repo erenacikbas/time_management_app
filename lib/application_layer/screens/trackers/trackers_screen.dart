@@ -52,7 +52,10 @@ class _TrackerScreenState extends State<TrackerScreen> {
             //backgroundColor: Color(0xff252a2d),
             appBar: AppBar(
               elevation: 0.0,
-              title: Text("Great Tracker"),
+              title: Padding(
+                padding: const EdgeInsets.only(left:6.0),
+                child: Text("Great Tracker"),
+              ),
               actions: <Widget>[
                 Padding(
                   padding: const EdgeInsets.only(right: 8.0),

@@ -85,7 +85,7 @@ class _TrackerAdderState extends State<TrackerAdder> {
     // vertical divider
 
     return Padding(
-      padding: const EdgeInsets.only(top: 8.0),
+      padding: const EdgeInsets.only(top: 0.0),
       child: Container(
         width: double.infinity,
         child: Container(

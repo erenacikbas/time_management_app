@@ -30,7 +30,7 @@ const kLoginScreenTextInputDecoration = InputDecoration(
 );
 
 const kAddingTodoInputDecoration = InputDecoration(
-  hintStyle: TextStyle(color: Colors.grey,fontSize: 18),
+  hintStyle: TextStyle(color: Colors.grey, fontSize: 18),
   fillColor: Colors.transparent,
   errorBorder: OutlineInputBorder(borderSide: BorderSide.none),
   focusedErrorBorder: OutlineInputBorder(borderSide: BorderSide.none),
@@ -70,6 +70,36 @@ const kRedGradient = LinearGradient(
     colors: [
       Color(0xff93291E),
       Color(0xffED213A),
+    ]);
+
+const kMorningGradient = LinearGradient(
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,
+    stops: [0.5, 1],
+    colors: [Color(0xffFF5F6D), Color(0xffFFC371)]);
+
+const kEveningGradient = LinearGradient(
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,
+    stops: [
+      0.5,
+      1
+    ],
+    colors: [
+      Color(0xff1e3c72),
+      Color(0xff2a5298),
+    ]);
+
+const kIbizaSunset = LinearGradient(
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,
+    stops: [
+      0.5,
+      1
+    ],
+    colors: [
+      Color(0xffee0979),
+      Color(0xffff6a00),
     ]);
 
 const kGradientBlueRasperry = LinearGradient(

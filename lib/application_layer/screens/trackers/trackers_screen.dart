@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -34,15 +35,8 @@ class _TrackerScreenState extends State<TrackerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('Got a message whilst in the foreground!');
-      print('Message data: ${message.data}');
-
-      if (message.notification != null) {
-        print('Message also contained a notification: ${message.notification}');
-      }
-    });
-
+    final user = Provider.of<User>(context);
+    print("USER ID ISSSSSS : ${user.uid}");
     return FutureBuilder(
       future: _userID,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -51,42 +45,43 @@ class _TrackerScreenState extends State<TrackerScreen> {
             // old
             //backgroundColor: Color(0xff252a2d),
             appBar: AppBar(
+              centerTitle: false,
               elevation: 0.0,
               title: Padding(
-                padding: const EdgeInsets.only(left:6.0),
+                padding: const EdgeInsets.only(left: 24.0),
                 child: Text("Great Tracker"),
               ),
-              actions: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
-                  child: CupertinoButton(
-                    child: Icon(
-                      Icons.person,
-                      color: Colors.white,
-                    ),
-                    // onLongPress: () async{
-                    //   await _auth.signOut();
-                    //   await AuthService().googleSignOut();
-                    // },
-                    onPressed: () async {
-                      print(await _userID);
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (BuildContext context) => Profile()));
-                    },
-                  ),
-                ),
-              ],
+              // actions: <Widget>[
+              //   Padding(
+              //     padding: const EdgeInsets.only(right: 8.0),
+              //     child: CupertinoButton(
+              //       child: Icon(
+              //         Icons.person,
+              //         color: Colors.white,
+              //       ),
+              //       // onLongPress: () async{
+              //       //   await _auth.signOut();
+              //       //   await AuthService().googleSignOut();
+              //       // },
+              //       onPressed: () async {
+              //         print(await _userID);
+              //         Navigator.push(
+              //             context,
+              //             MaterialPageRoute(
+              //                 builder: (BuildContext context) => Profile()));
+              //       },
+              //     ),
+              //   ),
+              // ],
             ),
             body: StreamProvider<List<Trackers>>.value(
-              value: DatabaseService().trackersFromFilteredData(snapshot.data),
+              value: DatabaseService().trackersFromFilteredData(user.uid),
               child: CupertinoScrollbar(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     TrackerAdder(
-                      userID: snapshot.data,
+                      userID: user.uid,
                     ),
                     Flexible(child: TrackerList()),
                   ],

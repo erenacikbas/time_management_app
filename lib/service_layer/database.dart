@@ -189,6 +189,13 @@ class DatabaseService {
     return usersCollection.snapshots().map(_userListFromSnapshot);
   }
 
+    Stream<List<Users>> userData(String userID) {
+    return usersCollection
+        .where("userID", isEqualTo: userID)
+        .snapshots()
+        .map(_userListFromSnapshot);
+  }
+
   Future updateUserData(
     String name,
     String email,
@@ -223,12 +230,7 @@ class DatabaseService {
     }).toList();
   }
 
-  Stream<List<Users>> userData(String userID) {
-    return usersCollection
-        .where("userID", isEqualTo: userID)
-        .snapshots()
-        .map(_userListFromSnapshot);
-  }
+
 
   // ************************************
 }

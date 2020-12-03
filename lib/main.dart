@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 // Import the firebase_core plugin
 import 'package:firebase_core/firebase_core.dart';
@@ -25,6 +26,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   DarkThemeProvider themeChangeProvider = DarkThemeProvider();
+
   @override
   void initState() {
     super.initState();
@@ -86,7 +88,9 @@ class FirebaseCheck extends StatelessWidget {
 
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
-          return Wrapper();
+          return StreamProvider<User>.value(
+            value: FirebaseAuth.instance.authStateChanges(),
+            child: Wrapper());
         }
 
         // Otherwise, show something whilst waiting for initialization to complete

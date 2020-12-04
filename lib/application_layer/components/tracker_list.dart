@@ -90,7 +90,7 @@ class _TrackerListState extends State<TrackerList> {
 
                   onDismissed: (direction) {
                     setState(() {
-                      DatabaseService().deleteEventbyID(element.eventID);
+                      DatabaseService().deleteEventbyID(element.userID,element.eventID);
                     });
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(

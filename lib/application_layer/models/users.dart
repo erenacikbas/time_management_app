@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Users {
   final String userID;
   final String email;
-  final String userName;
+  final int userCode;
   final String profilePicture;
   final String name;
   final List<dynamic> friends;
@@ -12,7 +12,7 @@ class Users {
   Users(
       {this.userID,
       this.email,
-      this.userName,
+      this.userCode,
       this.profilePicture,
       this.name,
       this.friends,

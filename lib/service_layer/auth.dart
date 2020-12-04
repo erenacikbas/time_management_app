@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -24,6 +26,10 @@ class AuthService {
 
   // sign in with email & password
   Future signInWithEmailAndPassword(String email, String password) async {
+    int min = 100000; //min and max values act as your 6 digit range
+                int max = 999999;
+                var randomizer = new Random(); 
+                var rNum = min + randomizer.nextInt(max - min);
     try {
       UserCredential result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
@@ -35,7 +41,7 @@ class AuthService {
             _auth.currentUser.photoURL,
             [],
             _auth.currentUser.uid,
-            _auth.currentUser.tenantId,
+            rNum,
             Timestamp.now());
       }
 
@@ -47,6 +53,10 @@ class AuthService {
 
   // register with email & password
   Future registerWithEmailAndPassword(String email, String password, String name) async {
+    int min = 100000; //min and max values act as your 6 digit range
+                int max = 999999;
+                var randomizer = new Random(); 
+                var rNum = min + randomizer.nextInt(max - min);
     
     _userID = _prefs.then((SharedPreferences preferences) {
       return (preferences.getString("userID") ?? "");
@@ -65,7 +75,7 @@ class AuthService {
           "",
           [],
           user.uid,
-          "",
+          rNum,
           Timestamp.now());
 
       // create a new document for the user with uid

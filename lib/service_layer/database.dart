@@ -12,17 +12,8 @@ class DatabaseService {
   // DatabaseService({this.uid});
 
   // * trackers collection reference
-  final CollectionReference trackersCollection =
-      FirebaseFirestore.instance.collection("trackers");
-
-  // * ordered collection for trackers
-  final Query orderedCollection = FirebaseFirestore.instance
-      .collection("trackers")
-      .orderBy("createdAt", descending: true);
-
-  // * collection reference for todos
-  final CollectionReference todosCollection =
-      FirebaseFirestore.instance.collection("todos");
+  final CollectionReference userDocuments =
+      FirebaseFirestore.instance.collection("userDoc");
 
   // * collection reference for users
   final CollectionReference usersCollection =
@@ -32,7 +23,6 @@ class DatabaseService {
 
   //   return await trackersCollection.add({"uid": uid});
   // }
-
   Future updateTrackersData(
       String startingTime,
       String finishingTime,
@@ -42,7 +32,11 @@ class DatabaseService {
       String userID,
       String eventID,
       Timestamp timeStamp) async {
-    return await trackersCollection.doc(eventID).set({
+    return await userDocuments
+        .doc(userID)
+        .collection("trackers")
+        .doc(eventID)
+        .set({
       "starting_time": startingTime,
       "finishing_time": finishingTime,
       "name": name,
@@ -73,7 +67,11 @@ class DatabaseService {
   // update TODOs
   Future updateTODO(Timestamp createdAt, String eventID, bool isDone,
       String task, String userID) async {
-    return await todosCollection.doc(eventID).set({
+    return await userDocuments
+        .doc(userID)
+        .collection("todos")
+        .doc(eventID)
+        .set({
       "createdAt": createdAt,
       "eventID": eventID,
       "isDone": isDone,
@@ -94,33 +92,6 @@ class DatabaseService {
     }).toList();
   }
 
-  // user data from snapshot
-  // UserData _userDataFromSnapShot(DocumentSnapshot snapshot) {
-  //   return UserData(
-  //     uid: uid,
-  //     startingTime: snapshot.data["starting_time"],
-  //     finishingTime: snapshot.data["finishing_time"],
-  //     name: snapshot.data["name"],
-  //     date: snapshot.data["date"],
-  //     duration: snapshot.data["duration"],
-  //   );
-  // }
-
-  //   Future sortUserData() {
-  //   return Firestore.instance
-  //       .collection('trackers')
-  //       .where('userID', isEqualTo: userID)
-  //       .getDocuments().then((value) {
-  //         print(value.documents.map((e) {print(e);}));
-  //       });
-  // }
-
-  // * Trackers
-  // get trackers stream
-  Stream<List<Trackers>> get trackers {
-    return orderedCollection.snapshots().map(_trackersListFromSnapShot);
-  }
-
   // ************************************
 
   // userID from sharedPreferences
@@ -131,15 +102,21 @@ class DatabaseService {
   }
 
   Stream<List<Trackers>> trackersFromFilteredData(String userID) {
-    return orderedCollection
-        .where("userID", isEqualTo: userID)
+    return FirebaseFirestore.instance
+        .collection("userDoc")
+        .doc(userID)
+        .collection("trackers")
+        .orderBy("createdAt", descending: true)
+        //.where("userID", isEqualTo: userID)
         .snapshots()
         .map(_trackersListFromSnapShot);
   }
 
   // Remove event with EventID
-  Future<void> deleteEventbyID(documentID) async {
-    return trackersCollection
+  Future<void> deleteEventbyID(userID, documentID) async {
+    return userDocuments
+        .doc(userID)
+        .collection("trackers")
         .doc(documentID)
         .delete()
         .then((value) => print("Selected Event: documentID Deleted!"))
@@ -148,22 +125,38 @@ class DatabaseService {
 
   // ************************************
 
-  // * Todos
-  // get todos stream
-  Stream<List<TodoItems>> get todos {
-    return todosCollection.snapshots().map(_todosListFromSnapshot);
-  }
+  // // * Todos
+  // // get todos stream
+  // Stream<List<TodoItems>> get todos {
+  //   return todosCollection.snapshots().map(_todosListFromSnapshot);
+  // }
 
   // user specified todos
   Stream<List<TodoItems>> todosFromFilteredData(String userID) {
-    return todosCollection
-        .where("userID", isEqualTo: userID)
+    return userDocuments
+        .doc(userID)
+        .collection("todos")
+        //.orderBy("createdAt", descending: true)
+        .where("isDone", isEqualTo: false)
+        //.where("userID", isEqualTo: userID)
         .snapshots()
         .map(_todosListFromSnapshot);
   }
 
-  Future<void> deleteTodoByEventID(documentID) async {
-    return todosCollection
+  Stream<List<TodoItems>> doneTodos(String userID) {
+    return userDocuments
+        .doc(userID)
+        .collection("todos")
+        .where("isDone", isEqualTo: true)
+        //.orderBy("createdAt", descending: true)
+        .snapshots()
+        .map(_todosListFromSnapshot);
+  }
+
+  Future<void> deleteTodoByEventID(userID, documentID) async {
+    return userDocuments
+        .doc(userID)
+        .collection("todos")
         .doc(documentID)
         .delete()
         .then((value) => print("Selected Event: documentID Deleted!"))
@@ -171,12 +164,20 @@ class DatabaseService {
   }
 
   // set isDone true
-  Future<void> setIsDoneTrue(documentID) async {
-    return todosCollection.doc(documentID).update({"isDone" : true});
+  Future<void> setIsDoneTrue(userID, documentID) async {
+    return userDocuments
+        .doc(userID)
+        .collection("todos")
+        .doc(documentID)
+        .update({"isDone": true});
   }
 
-  Future<void> setIsDoneFalse(documentId) async{
-    return todosCollection.doc(documentId).update({"isDone" : false});
+  Future<void> setIsDoneFalse(userID, documentId) async {
+    return userDocuments
+        .doc(userID)
+        .collection("todos")
+        .doc(documentId)
+        .update({"isDone": false});
   }
 
   // ************************************
@@ -189,9 +190,16 @@ class DatabaseService {
     return usersCollection.snapshots().map(_userListFromSnapshot);
   }
 
-    Stream<List<Users>> userData(String userID) {
+  Stream<List<Users>> userData(String userID) {
     return usersCollection
         .where("userID", isEqualTo: userID)
+        .snapshots()
+        .map(_userListFromSnapshot);
+  }
+
+  Stream<List<Users>> findMatchedUser(int userCode) {
+    return usersCollection
+        .where("userCode", isEqualTo: userCode)
         .snapshots()
         .map(_userListFromSnapshot);
   }
@@ -202,7 +210,7 @@ class DatabaseService {
     String profilePicture,
     List<String> friends,
     String userID,
-    String userName,
+    int userCode,
     Timestamp createdAt,
   ) async {
     return await usersCollection.doc(userID).set({
@@ -210,7 +218,7 @@ class DatabaseService {
       "email": email,
       "profilePicture": profilePicture,
       "userID": userID,
-      "userName": userName,
+      "userCode": userCode,
       "friends": friends,
       "createdAt": createdAt,
     });
@@ -223,14 +231,12 @@ class DatabaseService {
         email: doc.data()["email"],
         friends: doc.data()["friends"],
         name: doc.data()["name"],
-        userName: doc.data()["userName"],
+        userCode: doc.data()["userCode"],
         userID: doc.data()["userID"],
         profilePicture: doc.data()["profilePicture"],
       );
     }).toList();
   }
-
-
 
   // ************************************
 }

@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:time_management_app/application_layer/models/todoCurrentPage.dart';
+import 'package:time_management_app/application_layer/models/todoPage.dart';
 import 'package:time_management_app/application_layer/models/todos.dart';
 import 'package:time_management_app/application_layer/models/trackers.dart';
 import 'package:time_management_app/application_layer/models/users.dart';
@@ -66,7 +68,7 @@ class DatabaseService {
 
   // update TODOs
   Future updateTODO(Timestamp createdAt, String eventID, bool isDone,
-      String task, String userID) async {
+      String task, String userID,String page) async {
     return await userDocuments
         .doc(userID)
         .collection("todos")
@@ -77,6 +79,8 @@ class DatabaseService {
       "isDone": isDone,
       "todo": task,
       "userID": userID,
+      "pos": 0,
+      "page" : page,
     });
   }
 
@@ -143,14 +147,24 @@ class DatabaseService {
         .map(_todosListFromSnapshot);
   }
 
-  Stream<List<TodoItems>> doneTodos(String userID) {
+  Stream<List<TodoItems>> doneTodos(String userID,String page) {
     return userDocuments
         .doc(userID)
         .collection("todos")
+        .where("page",isEqualTo: page)
         .where("isDone", isEqualTo: true)
         //.orderBy("createdAt", descending: true)
         .snapshots()
         .map(_todosListFromSnapshot);
+  }
+
+  // ** Get Todo Category Name
+  Stream<List<TodoPage>> todoPageName(String userID) {
+    return userDocuments
+        .doc(userID)
+        .collection("todoPages").orderBy("createdAt", descending: false)
+        .snapshots()
+        .map(_todoPageList);
   }
 
   Future<void> deleteTodoByEventID(userID, documentID) async {
@@ -172,12 +186,39 @@ class DatabaseService {
         .update({"isDone": true});
   }
 
+  // change Todo Name
+  Future<void> updateTodoName(userID, documentID, updateValue) async {
+    return userDocuments
+        .doc(userID)
+        .collection("todos")
+        .doc(documentID)
+        .update({"todo": updateValue});
+  }
+
   Future<void> setIsDoneFalse(userID, documentId) async {
     return userDocuments
         .doc(userID)
         .collection("todos")
         .doc(documentId)
         .update({"isDone": false});
+  }
+
+  // Get Todo Page Settings
+  Stream<List<TodoPageSettings>> getTodoPageSettings(userID) {
+    return userDocuments
+        .doc(userID)
+        .collection("todoSettings")
+        .snapshots()
+        .map((_todoPageSettings));
+  }
+
+  // Change Todo Page Index
+  Future<void> setPageIndex(userID, updateValue) {
+    return userDocuments
+        .doc(userID)
+        .collection("todoSettings")
+        .doc(userID)
+        .update({"currentIndex": updateValue});
   }
 
   // ************************************
@@ -234,6 +275,23 @@ class DatabaseService {
         userCode: doc.data()["userCode"],
         userID: doc.data()["userID"],
         profilePicture: doc.data()["profilePicture"],
+      );
+    }).toList();
+  }
+
+  List<TodoPage> _todoPageList(QuerySnapshot snaphot) {
+    return snaphot.docs.map((doc) {
+      return TodoPage(
+          pageName: doc.data()["pageName"], index: doc.data()["index"],icon: doc.data()["icon"],timestamp: doc.data()["createdAt"]);
+    }).toList();
+  }
+
+  List<TodoPageSettings> _todoPageSettings(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return TodoPageSettings(
+        currentIndex: doc.data()["currentIndex"],
+        pageAmount: doc.data()["pageAmount"],
+        userID: doc.data()["userID"],
       );
     }).toList();
   }

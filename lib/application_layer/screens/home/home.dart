@@ -1,9 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:time_management_app/application_layer/components/Charts/bar_charts/large_bar_chart.dart';
+import 'package:time_management_app/application_layer/components/Charts/bar_charts/small_bar_chart.dart';
+import 'package:time_management_app/application_layer/components/Charts/pie_charts/pie_chart_1.dart';
 import 'package:time_management_app/application_layer/loading_screen.dart/loading_screen.dart';
-import 'package:time_management_app/application_layer/models/users.dart';
 import 'package:time_management_app/application_layer/screens/profile/profile.dart';
+import 'package:time_management_app/providers/dark_theme_provider.dart';
 import 'package:time_management_app/service_layer/database.dart';
 import 'package:time_management_app/shared/constants.dart';
 
@@ -15,6 +18,8 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
+    final themeChange = Provider.of<DarkThemeProvider>(context);
+    final height = MediaQuery.of(context).size.height;
     final user = Provider.of<User>(context);
     return StreamBuilder(
       stream: DatabaseService().userData(user.uid),
@@ -41,7 +46,7 @@ class _HomeState extends State<Home> {
                             builder: (BuildContext context) => Profile()));
                   },
                   child: Padding(
-                    padding: const EdgeInsets.only(right: 24.0, bottom: 5),
+                    padding: const EdgeInsets.only(right: 34.0, bottom: 5),
                     child: CircleAvatar(
                       backgroundColor: Colors.white,
                       radius: 24,
@@ -57,26 +62,172 @@ class _HomeState extends State<Home> {
             ),
             body: SafeArea(
               child: Padding(
-                padding: const EdgeInsets.only(left: 30, right: 35, top: 30),
-                child: Column(
-                  children: [
-                    Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          gradient: gradientByTime(greeting()),
-                          borderRadius: BorderRadius.circular(12)),
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Text(
-                          "Good ${greeting()}, ${snapshot.data[0].name} 👋",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w900,
-                              fontSize: 38),
+                padding: const EdgeInsets.only(left: 0, right: 0, top: 15),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 25.0,
+                        ),
+                        child: Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              //gradient: gradientByTime(greeting()),
+                              color: themeChange.darkTheme
+                                  ? Color(0xff16162f)
+                                  : Color(0xff191d21),
+                              borderRadius: BorderRadius.circular(12)),
+                          child: Padding(
+                            padding: const EdgeInsets.all(15.0),
+                            child: Text(
+                              "Good ${greeting()}, ${snapshot.data[0].name} 👋",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 30),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                      Row(
+                        children: [
+                          Expanded(
+                            child: AspectRatio(
+                              aspectRatio: 1.1,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(25, 10, 5, 10),
+                                child: Container(
+                                  child: Stack(
+                                    children: [
+                                      Center(
+                                          child: Container(
+                                        height: height / 6.5,
+                                        width: height / 6.5,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            // old yellow.accent
+                                            color: Colors.amber),
+                                      )),
+                                      Center(
+                                        child: Container(
+                                          height: height / 8,
+                                          width: height / 8,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: themeChange.darkTheme
+                                                ? Color(0xff16162f)
+                                                : Color(0xff191d21),
+                                          ),
+                                        ),
+                                      ),
+                                      Center(
+                                        child: Text(
+                                          "5\nTasks",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 25,
+                                              fontWeight: FontWeight.bold),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: themeChange.darkTheme
+                                        ? Color(0xff16162f)
+                                        : Color(0xff191d21),
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: AspectRatio(
+                              aspectRatio: 1.1,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(5, 10, 25, 10),
+                                child: Container(
+                                  child: Stack(
+                                    children: [
+                                      Center(
+                                          child: Container(
+                                        height: height / 6.5,
+                                        width: height / 6.5,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.cyan),
+                                      )),
+                                      Center(
+                                        child: Container(
+                                          height: height / 8,
+                                          width: height / 8,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: themeChange.darkTheme
+                                                ? Color(0xff16162f)
+                                                : Color(0xff191d21),
+                                          ),
+                                        ),
+                                      ),
+                                      Center(
+                                        child: Text(
+                                          "8\nHours",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 25,
+                                              fontWeight: FontWeight.bold),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: themeChange.darkTheme
+                                        ? Color(0xff16162f)
+                                        : Color(0xff191d21),
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
+                        child: BarChartSample3(),
+                      ),
+                      // Row(
+                      //   children: [
+                      //     Expanded(
+                      //       child: AspectRatio(
+                      //         aspectRatio: 3,
+                      //         child: Padding(
+                      //           padding:
+                      //               const EdgeInsets.fromLTRB(25, 0, 25, 20),
+                      //           child: Container(
+                      //             // child: Row(
+                      //             //   mainAxisAlignment: MainAxisAlignment.center,
+                      //             //   children: [
+                      //             //     Icon(Icons.add,size: 30),
+                      //             //     Text("Add Quick Todo",style: TextStyle(color: Colors.white,fontSize: 30),),
+                      //             //   ],
+                      //             // ),
+                      //             decoration: BoxDecoration(
+                      //                 borderRadius: BorderRadius.circular(15),
+                      //                 color: Color(0xff16162f)),
+                      //           ),
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
+                    ],
+                  ),
                 ),
               ),
             ),

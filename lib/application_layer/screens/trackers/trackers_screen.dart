@@ -9,6 +9,7 @@ import 'package:time_management_app/application_layer/components/tracker_list.da
 import 'package:time_management_app/application_layer/models/trackers.dart';
 import 'package:time_management_app/application_layer/models/users.dart';
 import 'package:time_management_app/application_layer/screens/profile/profile.dart';
+import 'package:time_management_app/providers/dark_theme_provider.dart';
 import 'package:time_management_app/service_layer/auth.dart';
 import 'package:time_management_app/service_layer/database.dart';
 
@@ -35,6 +36,7 @@ class _TrackerScreenState extends State<TrackerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final themeChange = Provider.of<DarkThemeProvider>(context);
     final user = Provider.of<User>(context);
     print("USER ID ISSSSSS : ${user.uid}");
     return FutureBuilder(

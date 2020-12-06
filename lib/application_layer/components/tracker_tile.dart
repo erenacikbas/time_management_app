@@ -33,12 +33,9 @@ class _TrackerTileState extends State<TrackerTile> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text("${widget.tracker.name}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),),
-                SizedBox(
-                  width: 10,
-                ),
-                Text(
-                    "${widget.tracker.startingTime} - ${widget.tracker.finishingTime}"),
-                SizedBox(width: 10),
+                Expanded(child: Container(),),
+                // Text(
+                //     "${widget.tracker.startingTime} - ${widget.tracker.finishingTime}"),
                 Text("${widget.tracker.duration}"),
                 SizedBox(
                   width: 10,

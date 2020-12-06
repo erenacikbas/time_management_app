@@ -325,7 +325,11 @@ class _ProfileState extends State<Profile> with AutomaticKeepAliveClientMixin {
                                 ListTile(
                                   title: Text("Friends"),
                                   onTap: () {
-                                    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => Friends()));
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                Friends()));
                                   },
                                   leading: Icon(
                                     Theme.of(context).brightness ==
